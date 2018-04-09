@@ -1,0 +1,64 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="gestion_pacientes.list">
+      <field name="name">Todos los pacientes</field>
+      <field name="model">gestion_pacientes.paciente</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="nombre"/>
+          <field name="apellidos"/>
+          <field name="nif"/>
+          <field name="fechaNacimiento"/>
+          <field name="genero"/>
+          <field name="telefono"/>
+          <field name="email"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="gestion_pacientes.action_window">
+      <field name="name">Ventana de pacientes</field>
+      <field name="res_model">gestion_pacientes.paciente</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="gestion_pacientes.action_server">
+      <field name="name">gestionPacientes server</field>
+      <field name="model_id" ref="model_gestion_pacientes_gestion_pacientes"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+
+    <menuitem name="Gestión de Pacientes" id="gestion_pacientes.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Pacientes" id="gestion_pacientes.pacientes" parent="gestion_pacientes.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="Todos los pacientes" id="gestion_pacientes.pacientes_list" parent="gestion_pacientes.pacientes"
+              action="gestion_pacientes.action_window"/>
+<!--
+    <menuitem name="Mis pacientes" id="gestion_pacientes.pacientes_propios_list" parent="gestion_pacientes.pacientes"
+              action="gestion_pacientes.action_window_misPacientes"/>
+-->
+
+  </data>
+</odoo>

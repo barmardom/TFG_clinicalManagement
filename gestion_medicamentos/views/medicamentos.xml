@@ -1,7 +1,7 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-    
+
     <record model="ir.ui.view" id="gestion_medicamentos.list">
       <field name="name">Todos los medicamentos</field>
       <field name="model">gestion_medicamentos.medicamento</field>
@@ -21,7 +21,7 @@
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="gestion_medicamentos.action_window">
-      <field name="name">Ventana de medicmaentos</field>
+      <field name="name">Ventana de medicamentos</field>
       <field name="res_model">gestion_medicamentos.medicamento</field>
       <field name="view_mode">tree,form</field>
     </record>

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "gestionMedicamentos",
+    'name': "gestionPacientes",
 
     'summary': """
-        Gestión de Medicamentos existentes""",
+        Gestión del historial clínico/dosis""",
 
     'description': """
-        Este módulo permite a los Doctores tener acceso al listado completo fármacos existentes, este les facilita la gestión de dosis a los pacientes
-        ya que tendran información disponible sobre los medicamentos recetados al instante.
+        Este módulo permite principalmente a los Doctores, pero tambien a Pacientes tener acceso a la gestión de dosisself.
+        El paciente solo puede consultar y los doctores gestionar el historial clínico de este teniendo como parte principal las Dosis.
         Otros modulos relacionados:
-            -> Gestión de dosis
+            -> Gestión de medicamentos
             -> Estudio estadístico
     """,
 
@@ -28,7 +28,7 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/medicamentos.xml',
+        'views/pacientes.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode
