@@ -14,7 +14,7 @@
     """,
 
     'author': "Bartolomé MD",
-    'website': "github.com/barmardom",
+    'website': "github.com/barmardom)",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
@@ -30,6 +30,7 @@
         # 'security/ir.model.access.csv',
         'views/pacientes.xml',
         'views/templates.xml',
+        'security/access.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

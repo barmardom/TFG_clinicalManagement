@@ -1,48 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
 <odoo>
   <data>
     <!-- explicit list view definition -->
 
-    <record model="ir.ui.view" id="gestion_pacientes.list">
-      <field name="name">Todos los pacientes</field>
-      <field name="model">gestion_pacientes.paciente</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="nombre"/>
-          <field name="apellidos"/>
-          <field name="nif"/>
-          <field name="fechaNacimiento"/>
-          <field name="genero"/>
-          <field name="telefono"/>
-          <field name="email"/>
-        </tree>
-      </field>
+    <!-- Tree view of pacientes -->
+    <record id="gestion_pacientes.tree" model="ir.ui.view">
+        <field name="name">pacientes.tree</field>
+        <field name="model">gestion_pacientes.paciente</field>
+        <field name="arch" type="xml">
+            <tree string="Lista de Pacientes">
+                <field name="nombre"/>
+                <field name="apellidos"/>
+                <field name="nif"/>
+                <field name="fechaNacimiento"/>
+                <field name="genero"/>
+                <field name="telefono"/>
+                <field name="email"/>
+                <field name="doctor_id"/>
+            </tree>
+        </field>
     </record>
+
+    <!-- Form view of pacientes -->
+    <record id="gestion_pacientes.form" model="ir.ui.view">
+        <field name="name">pacientes.form</field>
+        <field name="model">gestion_pacientes.paciente</field>
+        <field name="arch" type="xml">
+            <form string="Lista de Pacientes">
+                <sheet>
+                    <!--<label for="name" string="Apellidos y nombre" />-->
+                    <h1>
+                        <field name="apellidos"/>
+                    </h1>
+                    <h2>
+                        <field name="nombre"/>
+                    </h2>
+                    <notebook>
+                        <page string="Informacón General">
+                            <group>
+                                <group colspan="4" col="4">
+                                    <field name="nif"/>
+                                    <field name="genero" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="fechaNacimiento"/>
+                                    <field name="poblacion"/>
+                                    <field name="telefono"/>
+                                    <field name="email"/>
+                                    <field name="doctor_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Patologias">
+                            <group>
+                                <field name="patologia_ids"/>
+                            </group>
+                            <label  string="*El paciente tiene que existir en el sistema para poder añadir patologías" nolabel="1" />
+                        </page>
+                        <page string="Visitas">
+                            <separator string="Description" />
+                        </page>
+                        <page string="Dosis">
+                            <separator string="Description" />
+                        </page>
+                        <page string="Alertas">
+                            <separator string="Description" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
 
 
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="gestion_pacientes.action_window">
-      <field name="name">Ventana de pacientes</field>
+      <field name="name">Pacientes</field>
       <field name="res_model">gestion_pacientes.paciente</field>
       <field name="view_mode">tree,form</field>
     </record>
-
-
-    <!-- server action to the one above -->
-    <!--
-    <record model="ir.actions.server" id="gestion_pacientes.action_server">
-      <field name="name">gestionPacientes server</field>
-      <field name="model_id" ref="model_gestion_pacientes_gestion_pacientes"/>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": self._name,
-        }
-      </field>
-    </record>
-    -->
-
+    
+    
     <!-- Top menu item -->
 
     <menuitem name="Gestión de Pacientes" id="gestion_pacientes.menu_root"/>
@@ -55,10 +94,10 @@
 
     <menuitem name="Todos los pacientes" id="gestion_pacientes.pacientes_list" parent="gestion_pacientes.pacientes"
               action="gestion_pacientes.action_window"/>
-<!--
-    <menuitem name="Mis pacientes" id="gestion_pacientes.pacientes_propios_list" parent="gestion_pacientes.pacientes"
-              action="gestion_pacientes.action_window_misPacientes"/>
--->
+
+    <!--<menuitem name="Mis pacientes" id="gestion_pacientes.misPaciente" parent="gestion_pacientes.pacientes"
+              action="gestion_pacientes.action_window"/> -->
+
 
   </data>
 </odoo>
