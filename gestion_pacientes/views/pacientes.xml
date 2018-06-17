@@ -58,12 +58,41 @@
                         </page>
                         <page string="Patologias">
                             <group>
-                                <field name="patologia_ids" nolabel="1"/>
+                                <field name="patologia_ids" colspan="4" nolabel='1'>
+                                    <form string="Patologías del paciente">
+                                        <group colspan='4' col='4'>
+                                            <field name="nombre" />
+                                            <field name="descripcion" />
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="nombre" />
+                                        <field name="descripcion" />
+                                    </tree>
+                                </field>
                             </group>
                             <label  string="*El paciente tiene que existir en el sistema para poder añadir patologías" nolabel="1" />
                         </page>
                         <page string="Visitas">
                             <group>
+                                <field name="visita_ids" colspan="4" nolabel='1'>
+                                    <form string="Visitas del paciente">
+                                        <group colspan='4' col='4'>
+                                            <field name="fecha" />
+                                            <field name="asunto" />
+                                            <field name="descripcion" />
+                                            <field name="tratamiento" />
+                                            <field name="pruebas" />
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="fecha" />
+                                        <field name="asunto" />
+                                        <field name="descripcion" />
+                                        <field name="tratamiento" />
+                                        <field name="pruebas" />
+                                    </tree>
+                                </field>
                             </group>
                         </page>
                         <page string="Dosis">
