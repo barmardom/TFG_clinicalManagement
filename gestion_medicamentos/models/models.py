@@ -16,6 +16,7 @@ from odoo import models, fields, api
 
 class Medicamento(models.Model):
     _name = 'gestion_medicamentos.medicamento'
+    _rec_name = 'nombre'
 
     nombre = fields.Char(
         string="Nombre",

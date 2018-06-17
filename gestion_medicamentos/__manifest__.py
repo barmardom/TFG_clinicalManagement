@@ -3,18 +3,17 @@
     'name': "gestionMedicamentos",
 
     'summary': """
-        Gestión de Medicamentos existentes""",
+        Gestión de Medicamentos de existentes v3""",
 
     'description': """
         Este módulo permite a los Doctores tener acceso al listado completo fármacos existentes, este les facilita la gestión de dosis a los pacientes
         ya que tendran información disponible sobre los medicamentos recetados al instante.
-        Otros modulos relacionados:
-            -> Gestión de dosis
-            -> Estudio estadístico
+        -> Gestión de dosis
+        -> Estudio estadístico
     """,
 
-    'author': "Bartolomé MD",
-    'website': "github.com/barmardom",
+    'author': "Bartolomé MD (github.com/barmardom)",
+    'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
@@ -30,6 +29,9 @@
         # 'security/ir.model.access.csv',
         'views/medicamentos.xml',
         'views/templates.xml',
+    ],
+    'css': [
+        'static/src/css/style.css'
     ],
     # only loaded in demonstration mode
     'demo': [

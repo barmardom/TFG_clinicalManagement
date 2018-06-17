@@ -32,6 +32,9 @@
         'views/templates.xml',
         'security/access.xml',
     ],
+    'css': [
+        'static/src/css/style.css'
+    ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',

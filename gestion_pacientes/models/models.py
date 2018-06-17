@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, time
 
 # class gestion_pacientes(models.Model):
 #     _name = 'gestion_pacientes.gestion_pacientes'
@@ -26,6 +26,8 @@ from odoo import models, fields, api
 class Paciente(models.Model):
     _name = 'gestion_pacientes.paciente'
     _description = 'Pacientes'
+    _rec_name = 'nif'
+
     nombre = fields.Char(
         string="Nombre",
         size=20,
@@ -46,6 +48,7 @@ class Paciente(models.Model):
     fechaNacimiento = fields.Date(
 		string='Fecha de nacimiento',
 		help='Fecha de nacimiento del o la paciente',
+        default=time.strftime('1900-01-01'),
 		required=True
 	)
     genero = fields.Selection(
@@ -67,8 +70,6 @@ class Paciente(models.Model):
     doctor_id = fields.Many2one('res.users', string='Doctor')
     patologia_ids = fields.One2many('gestion_pacientes.patologia', 'paciente_id', string='Patologia')
     
-
-
 class Patologia(models.Model):
     _name = 'gestion_pacientes.patologia'
     _description = 'Patologias'
@@ -78,9 +79,8 @@ class Patologia(models.Model):
         required=True,
         help='Nombre de patologia'
     )
-    nombre = fields.Text(
+    descripcion = fields.Text(
         string="Descripción",
-        size=260,
         help='Descripción de patologia'
     )
     paciente_id = fields.Many2one('gestion_pacientes.paciente', ondelete='cascade', string="Paciente")

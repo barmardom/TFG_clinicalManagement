@@ -2,8 +2,11 @@
 <!DOCTYPE xml>
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-
+    <template id="assets_backend" name="gestion_pacientes css assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/gestion_pacientes/static/src/css/style.css"/>
+        </xpath>
+    </template>
     <!-- Tree view of pacientes -->
     <record id="gestion_pacientes.tree" model="ir.ui.view">
         <field name="name">pacientes.tree</field>
@@ -15,6 +18,7 @@
                 <field name="nif"/>
                 <field name="fechaNacimiento"/>
                 <field name="genero"/>
+                <field name="poblacion"/>
                 <field name="telefono"/>
                 <field name="email"/>
                 <field name="doctor_id"/>
@@ -22,7 +26,7 @@
         </field>
     </record>
 
-    <!-- Form view of pacientes -->
+    <!-- Form view form of pacientes -->
     <record id="gestion_pacientes.form" model="ir.ui.view">
         <field name="name">pacientes.form</field>
         <field name="model">gestion_pacientes.paciente</field>
@@ -30,10 +34,12 @@
             <form string="Lista de Pacientes">
                 <sheet>
                     <!--<label for="name" string="Apellidos y nombre" />-->
-                    <h1>
+                    <label for="apellidos" string="Apellidos"/>
+                    <h1 class="colorGeneral">
                         <field name="apellidos"/>
                     </h1>
-                    <h2>
+                    <label for="nombre" string="Nombre" />
+                    <h2 class="colorGeneral">
                         <field name="nombre"/>
                     </h2>
                     <notebook>
@@ -52,12 +58,13 @@
                         </page>
                         <page string="Patologias">
                             <group>
-                                <field name="patologia_ids"/>
+                                <field name="patologia_ids" nolabel="1"/>
                             </group>
                             <label  string="*El paciente tiene que existir en el sistema para poder añadir patologías" nolabel="1" />
                         </page>
                         <page string="Visitas">
-                            <separator string="Description" />
+                            <group>
+                            </group>
                         </page>
                         <page string="Dosis">
                             <separator string="Description" />

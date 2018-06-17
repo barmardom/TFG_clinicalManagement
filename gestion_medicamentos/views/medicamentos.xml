@@ -1,7 +1,11 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-    
+    <template id="assets_backend" name="gestion_medicamentos css assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/gestion_medicamentos/static/src/css/style.css"/>
+        </xpath>
+    </template>
+
     <record model="ir.ui.view" id="gestion_medicamentos.list">
       <field name="name">Todos los medicamentos</field>
       <field name="model">gestion_medicamentos.medicamento</field>
@@ -23,8 +27,8 @@
         <field name="arch" type="xml">
             <form string="Lista de Medicamentos">
                 <sheet>
-                    <!--<label for="name" string="Apellidos y nombre" />-->
-                    <h1>
+                    <label for="name" string="Nombre" />
+                    <h1 class="colorGeneral">
                         <field name="nombre"/>
                     </h1>
                     <notebook>
