@@ -80,23 +80,52 @@
                                         <group colspan='4' col='4'>
                                             <field name="fecha" />
                                             <field name="asunto" />
-                                            <field name="descripcion" />
                                             <field name="tratamiento" />
                                             <field name="pruebas" />
+                                        </group>
+                                        <group>
+                                            <field name="descripcion" />
+                                        </group>
+                                        <separator string="Dosis" attrs="{'invisible': [('tratamiento', '=', False)]}"/>
+                                        <group>
+                                            <field name="dosis_ids" attrs="{'invisible': [('tratamiento', '=', False)]}">
+                                                <form string="Patologías del paciente">
+                                                    <group colspan='4' col='4'>
+                                                        <field name="fechaInicio" />
+                                                        <field name="fechaFin" />
+                                                        <field name="cancelado" />
+                                                    </group>
+                                                    <group colspan='4' col='4'>
+                                                        <field name="cantidad" />
+                                                        <field name="frecuencia" />
+                                                        <field name="duraccion" />
+                                                        <field name="eficiencia" />
+                                                    </group>
+                                                </form>
+                                                <tree>
+                                                    <field name="fechaInicio" />
+                                                    <field name="fechaFin" />
+                                                    <field name="cancelado" />
+                                                    <field name="cantidad" />
+                                                    <field name="frecuencia" />
+                                                    <field name="duraccion" />
+                                                    <field name="eficiencia" />
+                                                </tree>
+                                            </field>
                                         </group>
                                     </form>
                                     <tree>
                                         <field name="fecha" />
                                         <field name="asunto" />
-                                        <field name="descripcion" />
                                         <field name="tratamiento" />
                                         <field name="pruebas" />
+                                        <field name="dosis_ids" />
                                     </tree>
                                 </field>
                             </group>
                         </page>
                         <page string="Dosis">
-                            <separator string="Description" />
+          
                         </page>
                         <page string="Alertas">
                             <separator string="Description" />

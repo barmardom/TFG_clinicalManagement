@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, time
-
+from datetime import timedelta
+import datetime
 # class gestion_pacientes(models.Model):
 #     _name = 'gestion_pacientes.gestion_pacientes'
 
@@ -104,14 +105,65 @@ class Visita(models.Model):
     )
     descripcion = fields.Text(
         string="Descripción",
-        required=True,
         help='Descripción'
     )
     tratamiento = fields.Boolean(
         string='Tratamiento',
         help='Tratamiento'
     )
+    #REVISAR
     pruebas = fields.Char(
         string='Pruebas'
     )
     paciente_id = fields.Many2one('gestion_pacientes.paciente', ondelete='cascade', string="Paciente")
+    dosis_ids = fields.One2many('gestion_pacientes.dosis', 'visita_id', string='Dosis de la visita')
+
+class Dosis(models.Model):
+    _name = 'gestion_pacientes.dosis'
+    _description = 'Dosis'
+    _rec_name = 'duraccion'
+
+    #@api.model
+    #def _get_fecha_fin(self):
+    #    date_1 = datetime.datetime.strptime(self.fechaInicio, "%m/%d/%y")
+    #    end_date = date_1 + datetime.timedelta(days=10)
+    #    return end_date.date()
+
+
+    fechaInicio = fields.Date(
+        string='Fecha de inicio',
+        help='Fecha de inicio',
+        required=True
+    )
+    duraccion = fields.Integer(
+        string="Duraccion",
+        required=True,
+        help='Duraccion en días del tratamiento con la dosis'
+    )
+    cantidad = fields.Integer(
+        string='Cantidad'
+    )
+    frecuencia = fields.Selection(
+        [('2','2 horas'),('4','4 horas'),('8','8 horas'),('12','12 horas'),('24','24 horas')],
+        string='Frecuencia',
+        help='Cada cuanto tiempo se toma la dosis'
+    )
+    cancelado = fields.Boolean(
+        string='Cancelado',
+        help='Cancelado'
+    )
+    eficiencia = fields.Selection(
+        [('muyBaja','Muy baja'),('baja','Baja'),('media','Media'),('alat','Alta'),('muyAlta','Muy alta')],
+        string='Eficiencia'
+    )
+    fechaFin = fields.Date('Fecha de fin',
+        compute='_get_fecha_fin',
+        readonly=True,
+        help='Fecha de fin para la toma de la dosis'
+        )
+    visita_id = fields.Many2one('gestion_pacientes.visita', ondelete='cascade', string="Visita")
+
+    @api.depends('fechaInicio', 'duraccion')
+    def _get_fecha_fin(self):
+        fechaDeInicio = datetime.datetime.strptime(self.fechaInicio, '%Y-%m-%d')
+        self.fechaFin = fechaDeInicio + datetime.timedelta(self.duraccion)
