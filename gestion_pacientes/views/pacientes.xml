@@ -7,7 +7,7 @@
             <link rel="stylesheet" href="/gestion_pacientes/static/src/css/style.css"/>
         </xpath>
     </template>
-    <!-- Tree view of pacientes -->
+    <!-- Arbol de pacientes -->
     <record id="gestion_pacientes.tree" model="ir.ui.view">
         <field name="name">pacientes.tree</field>
         <field name="model">gestion_pacientes.paciente</field>
@@ -26,14 +26,13 @@
         </field>
     </record>
 
-    <!-- Form view form of pacientes -->
+    <!-- Formulario de pacientes -->
     <record id="gestion_pacientes.form" model="ir.ui.view">
         <field name="name">pacientes.form</field>
         <field name="model">gestion_pacientes.paciente</field>
         <field name="arch" type="xml">
             <form string="Lista de Pacientes">
                 <sheet>
-                    <!--<label for="name" string="Apellidos y nombre" />-->
                     <label for="apellidos" string="Apellidos"/>
                     <h1 class="colorGeneral">
                         <field name="apellidos"/>
@@ -159,9 +158,6 @@
 
     <menuitem name="Todos los pacientes" id="gestion_pacientes.pacientes_list" parent="gestion_pacientes.pacientes"
               action="gestion_pacientes.action_window"/>
-
-    <!--<menuitem name="Mis pacientes" id="gestion_pacientes.misPaciente" parent="gestion_pacientes.pacientes"
-              action="gestion_pacientes.action_window"/> -->
 
 
   </data>
