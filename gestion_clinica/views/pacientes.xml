@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<odoo>
+  <data>
+    <template id="assets_backend" name="gestion_clinica css assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/gestion_clinica/static/src/css/style.css"/>
+        </xpath>
+    </template>
+
+
+    <!-- Tree view of pacientes -->
+    <record id="gestion_clinica.pacientes_tree" model="ir.ui.view">
+        <field name="name">pacientes.tree</field>
+        <field name="model">gestion_clinica.paciente</field>
+        <field name="arch" type="xml">
+            <tree string="Lista de Pacientes">
+                <field name="nombre"/>
+                <field name="apellidos"/>
+                <field name="nif"/>
+                <field name="fechaNacimiento"/>
+                <field name="genero"/>
+                <field name="poblacion"/>
+                <field name="telefono"/>
+                <field name="email"/>
+                <field name="doctor_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view form of pacientes -->
+    <record id="gestion_clinica.pacientes_form" model="ir.ui.view">
+        <field name="name">pacientes.form</field>
+        <field name="model">gestion_clinica.paciente</field>
+        <field name="arch" type="xml">
+            <form string="Lista de Pacientes">
+                <sheet>
+                    <!--<label for="name" string="Apellidos y nombre" />-->
+                    <label for="apellidos" string="Apellidos"/>
+                    <h1 class="colorGeneral">
+                        <field name="apellidos"/>
+                    </h1>
+                    <label for="nombre" string="Nombre" />
+                    <h2 class="colorGeneral">
+                        <field name="nombre"/>
+                    </h2>
+                    <notebook>
+                        <page string="Informacón General">
+                            <group>
+                                <group colspan="4" col="4">
+                                    <field name="nif"/>
+                                    <field name="genero" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="fechaNacimiento"/>
+                                    <field name="poblacion"/>
+                                    <field name="telefono"/>
+                                    <field name="email"/>
+                                    <field name="doctor_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Patologias">
+                            <group>
+                                <field name="patologia_ids" colspan="4" nolabel='1'>
+                                    <form string="Patologías del paciente">
+                                        <group colspan='4' col='4'>
+                                            <field name="nombre" />
+                                            <field name="descripcion" />
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="nombre" />
+                                        <field name="descripcion" />
+                                    </tree>
+                                </field>
+                            </group>
+                            <label  string="*El paciente tiene que existir en el sistema para poder añadir patologías" nolabel="1" />
+                        </page>
+                        <page string="Visitas">
+                            <group>
+                                <field name="visita_ids" colspan="4" nolabel='1'>
+                                    <form string="Visitas del paciente">
+                                        <group colspan='4' col='4'>
+                                            <field name="fecha" />
+                                            <field name="asunto" />
+                                            <field name="tratamiento" />
+                                            <field name="pruebas" />
+                                        </group>
+                                        <group>
+                                            <field name="descripcion" />
+                                        </group>
+                                        <separator string="Dosis" attrs="{'invisible': [('tratamiento', '=', False)]}"/>
+                                        <group>
+                                            <field name="dosis_ids" attrs="{'invisible': [('tratamiento', '=', False)]}">
+                                                <form string="Patologías del paciente">
+                                                    <group colspan='4' col='4'>
+                                                        <field name="fechaInicio" />
+                                                        <field name="fechaFin" />
+                                                        <field name="cancelado" />
+                                                    </group>
+                                                    <group colspan='4' col='4'>
+                                                        <field name="cantidad" />
+                                                        <field name="frecuencia" />
+                                                        <field name="duraccion" />
+                                                        <field name="eficiencia" />
+                                                    </group>
+                                                </form>
+                                                <tree>
+                                                    <field name="fechaInicio" />
+                                                    <field name="fechaFin" />
+                                                    <field name="cancelado" />
+                                                    <field name="cantidad" />
+                                                    <field name="frecuencia" />
+                                                    <field name="duraccion" />
+                                                    <field name="eficiencia" />
+                                                </tree>
+                                            </field>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="fecha" />
+                                        <field name="asunto" />
+                                        <field name="tratamiento" />
+                                        <field name="pruebas" />
+                                        <field name="dosis_ids" />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Dosis">
+                            
+                        </page>
+                        <page string="Alertas">
+                            <separator string="Description" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="gestion_clinica.action_windowPacientes">
+      <field name="name">Pacientes</field>
+      <field name="res_model">gestion_clinica.paciente</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem name="Gestión de Clínica" id="gestion_clinica.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Pacientes" id="gestion_clinica.pacientes" parent="gestion_clinica.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="Todos los pacientes" id="gestion_clinica.pacientes_list" parent="gestion_clinica.pacientes"
+              action="gestion_clinica.action_windowPacientes"/>
+
+
+              
+    
+
+  </data>
+</odoo>

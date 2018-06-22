@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<odoo>
+  <data>
+    <template id="assets_backend" name="gestion_clinica css assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/gestion_clinica/static/src/css/style.css"/>
+        </xpath>
+    </template>
+
+    <record model="ir.ui.view" id="gestion_clinica.medicamentos_tree">
+      <field name="name">medicamentos.tree</field>
+      <field name="model">gestion_clinica.medicamento</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="nombre"/>
+          <field name="codigo"/>
+          <field name="presentacion"/>
+          <field name="cantidad"/>
+          <field name="unidad"/>
+          <field name="enlace" widget="url"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="gestion_clinica.medicamentos_form" model="ir.ui.view">
+        <field name="name">medicamentos.form</field>
+        <field name="model">gestion_clinica.medicamento</field>
+        <field name="arch" type="xml">
+            <form string="Lista de Medicamentos">
+                <sheet>
+                    <label for="name" string="Nombre" />
+                    <h1 class="colorGeneral">
+                        <field name="nombre"/>
+                    </h1>
+                    <notebook>
+                        <page string="Informacón General">
+                            <group>
+                                <group colspan="4" col="4">
+                                    <field name="codigo"/>
+                                    <field name="presentacion"/>
+                                    <field name="cantidad"/>
+                                    <field name="unidad"/>
+                                    <field name="enlace" widget="url"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+   <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="gestion_clinica.action_windowMedicamentos">
+      <field name="name">Ventana de medicmaentos</field>
+      <field name="res_model">gestion_clinica.medicamento</field>
+      <field name="view_mode">tree,form</field>
+    </record> 
+
+
+
+    <!-- Top menu item -->
+
+    <!-- menu categories -->
+
+    <menuitem name="Medicamentos" id="gestion_clinica.medicamentos" parent="gestion_clinica.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="Todos los medicamentos" id="gestion_clinica.medicamentos_list" parent="gestion_clinica.medicamentos"
+              action="gestion_clinica.action_windowMedicamentos"/> 
+
+  </data>
+</odoo>
