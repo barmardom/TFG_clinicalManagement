@@ -32,7 +32,8 @@ class Medicamento(models.Model):
         string="Nombre",
         size=60,
         required=True,
-        help='Nombre del medicamento'
+        help='Nombre del medicamento',
+        translate=True
     )
     codigo = fields.Char(
         string="Código",
@@ -56,6 +57,7 @@ class Medicamento(models.Model):
         string='Enlace',
         help='Enlace del medicamento'
     )
+    dosis_ids = fields.One2many('gestion_clinica.dosis', 'medicamento_id', string='Medicamento de la dosis')
 
 class Paciente(models.Model):
     _name = 'gestion_clinica.paciente'
@@ -195,6 +197,7 @@ class Dosis(models.Model):
         help='Fecha de fin para la toma de la dosis'
         )
     visita_id = fields.Many2one('gestion_clinica.visita', ondelete='cascade', string="Visita")
+    medicamento_id = fields.Many2one('gestion_clinica.medicamento', ondelete='cascade', string="Medicamento")
 
     @api.depends('fechaInicio', 'duraccion')
     def _get_fecha_fin(self):

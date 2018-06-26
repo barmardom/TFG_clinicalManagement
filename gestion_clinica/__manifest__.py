@@ -28,10 +28,11 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
+        'security/access.xml',
         'views/pacientes.xml',
         'views/medicamentos.xml',
-        'security/access.xml',
+
     ],
     'css': [
         'static/src/css/style.css'
