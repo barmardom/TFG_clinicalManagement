@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE xml>
 <odoo>
-    
     <data>
         <record id="group_clinica_doctor" model="res.groups">
             <field name="name">Doctor</field>
@@ -19,6 +18,7 @@
             <field name="groups" eval="[(4, ref('group_clinica_doctor'))]" />
             <field name="domain_force">[('doctor_id', '=', user.id)]</field>
         </record> -->
+
 
   </data>
 </odoo>

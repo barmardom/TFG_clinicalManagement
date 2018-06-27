@@ -3,26 +3,7 @@
 from odoo import models, fields, api, time
 from datetime import timedelta
 import datetime
-# class gestion_pacientes(models.Model):
-#     _name = 'gestion_pacientes.gestion_pacientes'
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         self.value2 = float(self.value) / 100
-
-
-#class res_users(models.Model):
-#    _inherit = 'res.users'  
-#
-#    _columns = {            
-#       'doctor_u' : fields.many2one('doctores', 'Doctor', help="Selecciona doctor"),           
-#    }
-#res_users()
 
 class Medicamento(models.Model):
     _name = 'gestion_clinica.medicamento'
@@ -106,10 +87,12 @@ class Paciente(models.Model):
     doctor_id = fields.Many2one('res.users', string='Doctor')
     patologia_ids = fields.One2many('gestion_clinica.patologia', 'paciente_id', string='Patologia')
     visita_ids = fields.One2many('gestion_clinica.visita', 'paciente_id', string='Visita')
+    #todasDosis = fields.One2many(related='visita_ids.dosis_ids', store=True)
     
 class Patologia(models.Model):
     _name = 'gestion_clinica.patologia'
     _description = 'Patologias'
+    
     nombre = fields.Char(
         string="Nombre",
         size=20,
@@ -126,6 +109,7 @@ class Visita(models.Model):
     _name = 'gestion_clinica.visita'
     _description = 'Visitas'
     _rec_name = 'asunto'
+    _order = "fecha desc"
 
     fecha = fields.Date(
         string='Fecha',
@@ -152,6 +136,7 @@ class Visita(models.Model):
     )
     paciente_id = fields.Many2one('gestion_clinica.paciente', ondelete='cascade', string="Paciente")
     dosis_ids = fields.One2many('gestion_clinica.dosis', 'visita_id', string='Dosis de la visita')
+    nombreDoctor = fields.Char(related='paciente_id.doctor_id.name', store=True, string="Nombre")
 
 class Dosis(models.Model):
     _name = 'gestion_clinica.dosis'

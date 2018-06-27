@@ -32,6 +32,7 @@
         'security/access.xml',
         'views/pacientes.xml',
         'views/medicamentos.xml',
+        'views/visitas.xml',
 
     ],
     'css': [
