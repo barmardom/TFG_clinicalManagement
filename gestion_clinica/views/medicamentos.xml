@@ -70,7 +70,7 @@
 
     <!-- actions -->
 
-    <menuitem name="Todos los medicamentos" id="gestion_clinica.medicamentos_list" parent="gestion_clinica.medicamentos"
+    <menuitem name="Lista de medicamentos" id="gestion_clinica.medicamentos_list" parent="gestion_clinica.medicamentos"
               action="gestion_clinica.action_windowMedicamentos"/> 
 
   </data>

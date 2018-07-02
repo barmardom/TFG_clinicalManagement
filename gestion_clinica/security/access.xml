@@ -5,18 +5,46 @@
         <record id="group_clinica_doctor" model="res.groups">
             <field name="name">Doctor</field>
         </record>
-
         <record id="group_clinica_paciente" model="res.groups">
             <field name="name">Paciente</field>
         </record>
+        <record id="group_clinica_distribuidor" model="res.groups">
+            <field name="name">Distrubuidor</field>
+        </record>
           
         <!-- FILTRAR MIS PACIENTES -->  
-        <!--  
         <record id="group_clinica_pacientes_doctor" model="ir.rule">
-            <field name="name">Pacientes asignados al doctor correspondiente</field>
+            <field name="name">Pacientes filtrados por doctor logeado</field>
             <field name="model_id" ref="model_gestion_clinica_paciente" />
             <field name="groups" eval="[(4, ref('group_clinica_doctor'))]" />
             <field name="domain_force">[('doctor_id', '=', user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record> 
+
+        <!-- FILTRAR VISITAS --> 
+       <record id="group_clinica_visitas_doctor" model="ir.rule">
+            <field name="name">Visitas filtradas por doctor logeado</field>
+            <field name="model_id" ref="model_gestion_clinica_visita" />
+            <field name="groups" eval="[(4, ref('group_clinica_doctor'))]" />
+            <field name="domain_force">[('idDoctor', '=', user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/> <!--REVISAR-->
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- <record id="group_clinica_pacientes_dosis" model="ir.rule">
+            <field name="name">Dosis filtrados por doctor logeado</field>
+            <field name="model_id" ref="model_gestion_clinica_dosis" />
+            <field name="groups" eval="[(4, ref('group_clinica_doctor'))]" />
+            <field name="domain_force">[('paciente_id', '=', user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
         </record> -->
 
 

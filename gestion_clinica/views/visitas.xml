@@ -52,7 +52,7 @@
                                             <field name="descripcion" />
                                         </group>
                                         <group colspan='4' col='2'>
-                                            <field name="dosis_ids" attrs="{'invisible': [('tratamiento', '=', False)]}">
+                                            <field name="dosis_ids">
                                                 <form string="Patologías del paciente">
                                                     <group>
                                                         <field name="medicamento_id" />

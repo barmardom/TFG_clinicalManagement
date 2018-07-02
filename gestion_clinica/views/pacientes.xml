@@ -24,6 +24,7 @@
                 <field name="telefono"/>
                 <field name="email"/>
                 <field name="doctor_id"/>
+                <field name="visita_ids"/>
             </tree>
         </field>
     </record>
@@ -54,6 +55,9 @@
                                     <field name="poblacion"/>
                                     <field name="telefono"/>
                                     <field name="email"/>
+                                    <field name="donante"/>
+                                </group>
+                                <group>
                                     <field name="doctor_id"/>
                                 </group>
                             </group>
@@ -103,20 +107,21 @@
                                                     </group>
                                                     <group colspan='4' col='4'>
                                                         <field name="cantidad" />
+                                                        <field name="tipo" />
                                                         <field name="frecuencia" />
                                                         <field name="duraccion" />
                                                         <field name="eficiencia" />
+                                                        <field name="especificaciones" />
                                                     </group>
-
                                                 </form>
                                                 <tree>
                                                     <field name="fechaInicio" />
                                                     <field name="fechaFin" />
-                                                    <field name="cancelado" />
                                                     <field name="cantidad" />
+                                                    <field name="tipo" />
                                                     <field name="frecuencia" />
-                                                    <field name="duraccion" />
                                                     <field name="eficiencia" />
+                                                    <field name="cancelado" />
                                                 </tree>
                                             </field>
                                         </group>
@@ -133,28 +138,35 @@
                         </page>
                         <page string="Dosis">
                             <group>
-                                <!--<field name="dosisT_ids" colspan="4" nolabel='1'>
+                                <field name="dosis_ids" colspan="4" nolabel='1'>
                                     <form string="Dosis del paciente">
+                                        <group colspan='4' col='4'>
+                                            <field name="medicamento_id" />
+                                            <field name="visita_id" />                                       
+                                        </group>                                                     
                                         <group colspan='4' col='4'>
                                             <field name="fechaInicio" />
                                             <field name="fechaFin" />
                                             <field name="cancelado" />
+                                        </group>
+                                        <group colspan='4' col='4'>
                                             <field name="cantidad" />
+                                            <field name="tipo" />
                                             <field name="frecuencia" />
                                             <field name="duraccion" />
-                                            <field name="eficiencia" />                                        
+                                            <field name="eficiencia" />
+                                            <field name="especificaciones" />
                                         </group>
                                     </form>
                                     <tree>
                                         <field name="fechaInicio" />
                                         <field name="fechaFin" />
                                         <field name="cancelado" />
-                                        <field name="cantidad" />
                                         <field name="frecuencia" />
                                         <field name="duraccion" />
                                         <field name="eficiencia" />
                                     </tree>
-                                </field> -->
+                                </field>
                             </group>
                         </page>
                         <page string="Alertas">
@@ -185,7 +197,7 @@
 
     <!-- actions -->
 
-    <menuitem name="Todos los pacientes" id="gestion_clinica.pacientes_list" parent="gestion_clinica.pacientes"
+    <menuitem name="Mis pacientes" id="gestion_clinica.pacientes_list" parent="gestion_clinica.pacientes"
               action="gestion_clinica.action_windowPacientes"/>
 
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<odoo>
+  <data>
+    <template id="assets_backend" name="gestion_clinica css assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/gestion_clinica/static/src/css/style.css"/>
+        </xpath>
+    </template>
+
+
+    <!--<record model="ir.actions.act_window" id="gestion_clinica.action_windowEstadisticas">
+      <field name="name">Visitas</field>
+      <field name="res_model">gestion_clinica.visita</field>
+      <field name="view_mode">tree,form</field>
+    </record> -->
+    
+    <!-- menu categories -->
+
+    <menuitem name="Estadísticas" id="gestion_clinica.estadisticas" parent="gestion_clinica.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="Efectividad de productos" id="gestion_clinica.estadisticas_medicamentos" parent="gestion_clinica.estadisticas"
+              action="gestion_clinica.action_windowMedicamentos"/>
+
+    <menuitem name="Informes" id="gestion_clinica.estadisticas_informes" parent="gestion_clinica.estadisticas"
+              action="gestion_clinica.action_windowVisitas"/>
+
+
+            
+  </data>
+</odoo>

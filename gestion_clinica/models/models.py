@@ -45,6 +45,7 @@ class Paciente(models.Model):
     _description = 'Pacientes'
     _rec_name = 'nif'
 
+
     nombre = fields.Char(
         string="Nombre",
         size=20,
@@ -84,9 +85,14 @@ class Paciente(models.Model):
         string='Población',
         help='Lugar de residencia'
     )
-    doctor_id = fields.Many2one('res.users', string='Doctor')
+    donante = fields.Boolean(
+        string='Donante',
+        help='Donante de ovulos o semen'
+    )
+    doctor_id = fields.Many2one('res.users', string='Doctor', required=True)
     patologia_ids = fields.One2many('gestion_clinica.patologia', 'paciente_id', string='Patologia')
     visita_ids = fields.One2many('gestion_clinica.visita', 'paciente_id', string='Visita')
+    dosis_ids = fields.One2many('gestion_clinica.dosis', 'paciente_id', string='Dosis2')
     #todasDosis = fields.One2many(related='visita_ids.dosis_ids', store=True)
     
 class Patologia(models.Model):
@@ -130,25 +136,20 @@ class Visita(models.Model):
         string='Tratamiento',
         help='Tratamiento'
     )
-    #REVISAR
-    pruebas = fields.Char(
-        string='Pruebas'
+    pruebas = fields.Boolean(
+        string='Pruebas',
+        help='Pruebas médicas a realizar'
     )
     paciente_id = fields.Many2one('gestion_clinica.paciente', ondelete='cascade', string="Paciente")
-    dosis_ids = fields.One2many('gestion_clinica.dosis', 'visita_id', string='Dosis de la visita')
-    nombreDoctor = fields.Char(related='paciente_id.doctor_id.name', store=True, string="Nombre")
+    dosis_ids = fields.One2many('gestion_clinica.dosis', 'visita_id', string='Dosis relacionadas')
+    #Otras
+    nombreDoctor = fields.Char(related='paciente_id.doctor_id.name', store=True, string="Doctor", readonly=True)
+    idDoctor = fields.Integer(related='paciente_id.doctor_id.id', store=True, string="ID Doctor", readonly=True)
 
 class Dosis(models.Model):
     _name = 'gestion_clinica.dosis'
     _description = 'Dosis'
     _rec_name = 'duraccion'
-
-    #@api.model
-    #def _get_fecha_fin(self):
-    #    date_1 = datetime.datetime.strptime(self.fechaInicio, "%m/%d/%y")
-    #    end_date = date_1 + datetime.timedelta(days=10)
-    #    return end_date.date()
-
 
     fechaInicio = fields.Date(
         string='Fecha de inicio',
@@ -162,6 +163,10 @@ class Dosis(models.Model):
     )
     cantidad = fields.Integer(
         string='Cantidad'
+    )
+    tipo = fields.Selection(
+        [('toma','Toma'),('4','Aplicación')],
+        string='Tipo'
     )
     frecuencia = fields.Selection(
         [('2','2 horas'),('4','4 horas'),('8','8 horas'),('12','12 horas'),('24','24 horas')],
@@ -180,10 +185,16 @@ class Dosis(models.Model):
         compute='_get_fecha_fin',
         readonly=True,
         help='Fecha de fin para la toma de la dosis'
-        )
+    )
+    especificaciones = fields.Text(
+        string="Especificaciones",
+        help='Especificaciones'
+    )
     visita_id = fields.Many2one('gestion_clinica.visita', ondelete='cascade', string="Visita")
-    medicamento_id = fields.Many2one('gestion_clinica.medicamento', ondelete='cascade', string="Medicamento")
-
+    medicamento_id = fields.Many2one('gestion_clinica.medicamento', string="Medicamento", required=True)
+    paciente_id = fields.Many2one('gestion_clinica.paciente', ondelete='cascade', string="Paciente", required=True)
+   
+    @api.one
     @api.depends('fechaInicio', 'duraccion')
     def _get_fecha_fin(self):
         if self.fechaInicio and self.duraccion:
