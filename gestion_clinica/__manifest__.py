@@ -9,6 +9,7 @@
         Este módulo permite a los profesionales de la clínica:
             -Gestionar la lista completa de medicamentos registrados (vademecum), junto con su eficiencia global en los pacientes.
             -Gestionar a los pacientes, crear, editar, borrar. Así como las patologías, visitas, dosis y alertas asociados a ellos.
+            -Estudio de estadísticas por parte de los proveedores de fármacos
         **Como funcionalidades a desarrollar en el futuro destacan:
             -Sistema para gestionar el inventario completo disponible (desde medicamentos a maquinarias).
             -Acceso a pacientes
