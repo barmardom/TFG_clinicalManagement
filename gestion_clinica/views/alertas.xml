@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<odoo>
+  <data>
+    <template id="assets_backend" name="gestion_clinica css assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/gestion_clinica/static/src/css/style.css"/>
+        </xpath>
+    </template>
+
+
+    <!-- ALERTA - ARBOL -->
+    <record id="gestion_clinica.alertas_tree" model="ir.ui.view">
+        <field name="name">alertas.tree</field>
+        <field name="model">gestion_clinica.alerta</field>
+        <field name="arch" type="xml">
+            <form string="Enviar alertas">
+                <group colspan='0' col='0'>
+                  <separator string="Sistema de alertas"/>
+                  <separator/>
+                  <parrafo style="font-weight: bold">Bienvenido al sistema de alertas de Inebir, pulsando el boton "Enviar Alertas" el sistema enviará una notificación via email a todos tus pacientes que esten actualmente en tratamiento y cuya dosis finalice en menos de 7 días.</parrafo>
+                  <br />
+                  <parrafo>*La notificación solo será enviada 1 vez al paciente.</parrafo>
+                </group>
+                <footer>
+                    <button name="envia_email" string="Enviar alertas" icon="fa-envelope-o" type="object" class="oe_highlight" />
+                    <button string="Cancel" icon="fa-close" class="btn btn-primary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+    <record model="ir.actions.act_window" id="gestion_clinica.action_windowAlertas">
+      <field name="name">Alertas</field>
+      <field name="res_model">gestion_clinica.alerta</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+
+
+    <menuitem name="Alertas" id="gestion_clinica.alertas_list" parent="gestion_clinica.pacientes"
+              action="gestion_clinica.action_windowAlertas"/>s"/>
+
+
+            
+  </data>
+</odoo>

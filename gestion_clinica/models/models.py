@@ -3,10 +3,15 @@
 from odoo import models, fields, api, time
 from datetime import timedelta
 import datetime
-
+import smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+from openerp.api import Environment
+from urlparse import urlparse, parse_qs
 
 class Medicamento(models.Model):
     _name = 'gestion_clinica.medicamento'
+    _description = 'Medicamento'
     _rec_name = 'nombre'
 
     nombre = fields.Char(
@@ -92,7 +97,9 @@ class Paciente(models.Model):
     doctor_id = fields.Many2one('res.users', string='Doctor', required=True)
     patologia_ids = fields.One2many('gestion_clinica.patologia', 'paciente_id', string='Patologia')
     visita_ids = fields.One2many('gestion_clinica.visita', 'paciente_id', string='Visita')
+    #REVISAR
     dosis_ids = fields.One2many('gestion_clinica.dosis', 'paciente_id', string='Dosis2')
+    #alertas_ids = fields.One2many('gestion_clinica.alerta', 'paciente_id', string='Alerta')
     #todasDosis = fields.One2many(related='visita_ids.dosis_ids', store=True)
     
 class Patologia(models.Model):
@@ -151,6 +158,30 @@ class Dosis(models.Model):
     _description = 'Dosis'
     _rec_name = 'duraccion'
 
+    @api.one
+    @api.depends('fechaInicio', 'duraccion')
+    def _get_fecha_fin(self):
+        if self.fechaInicio and self.duraccion:
+            fechaDeInicio = datetime.datetime.strptime(self.fechaInicio, '%Y-%m-%d')
+            self.fechaFin = fechaDeInicio + datetime.timedelta(self.duraccion)
+
+    #@api.multi
+    #@api.onchange('visita_id')
+    #def _get_filtra_pacientes_visitas_dosis(self):
+        #url = "http://localhost/web?debug=1#id=2&view_type=form&model=gestion_clinica.paciente&menu_id=235&action=264"
+        #uri = urlparse(url)
+        #qs = uri.fragment
+        #final = parse_qs(qs).get('id', None)
+    #    visit = self.env['gestion_clinica.visita'].search([('id','=', self.visita_id.id)], limit=1)
+
+    #    res = self.env['gestion_clinica.paciente'].search([('id','=', visit.id)], limit=1)
+    #    return res
+
+    #@api.multi
+    #def _get_filtra_visitas(self):
+    #    res = self.env['gestion_clinica.visita'].search([('id','=', '4')], limit=1)
+    #    return res
+
     fechaInicio = fields.Date(
         string='Fecha de inicio',
         help='Fecha de inicio',
@@ -190,13 +221,60 @@ class Dosis(models.Model):
         string="Especificaciones",
         help='Especificaciones'
     )
-    visita_id = fields.Many2one('gestion_clinica.visita', ondelete='cascade', string="Visita")
+    alertaEnviada = fields.Boolean(
+        string='Alerta enviada',
+        help='Alerta',
+        readonly=True
+    )
+    visita_id = fields.Many2one('gestion_clinica.visita', store=True, ondelete='cascade', string="Visita")
     medicamento_id = fields.Many2one('gestion_clinica.medicamento', string="Medicamento", required=True)
-    paciente_id = fields.Many2one('gestion_clinica.paciente', ondelete='cascade', string="Paciente", required=True)
+    paciente_id = fields.Many2one(related='visita_id.paciente_id', string="Paciente", required=True, readonly=True) 
+    #lambda self: self.env['gestion_clinica.paciente'].search([('nif','=', self.visita_id.paciente_id.nif)], limit=1) default=lambda self: self.env['gestion_clinica.paciente'].search([('id', '=', self.idPaciente)], limit=1)
    
-    @api.one
-    @api.depends('fechaInicio', 'duraccion')
-    def _get_fecha_fin(self):
-        if self.fechaInicio and self.duraccion:
-            fechaDeInicio = datetime.datetime.strptime(self.fechaInicio, '%Y-%m-%d')
-            self.fechaFin = fechaDeInicio + datetime.timedelta(self.duraccion)
+
+
+
+class Alerta(models.TransientModel):
+    _name = 'gestion_clinica.alerta'
+    _description = 'Alerta'
+
+
+    #paciente_id = fields.Many2one('gestion_clinica.paciente', ondelete='cascade', string="Paciente")
+    #dosis_id = fields.Many2one('gestion_clinica.dosis', ondelete='cascade', string="Dosis")
+    #fechaFinDosis = fields.Date(related='dosis_id.fechaFin', store=True, string="Doctor", readonly=True)
+
+    @api.multi
+    def envia_email(self):
+
+            model = self.env['gestion_clinica.paciente']        # retrieve an instance of MODEL
+            pacientes = model.search([])                        # search returns a recordset
+            for paciente in pacientes:                          # iterate over the records
+                for dosis in paciente.dosis_ids:
+                    fecha_sumada = datetime.datetime.now() + datetime.timedelta(7)
+                    date_fecha = datetime.datetime.strftime(fecha_sumada, '%Y-%m-%d')
+                    if (dosis.alertaEnviada ==False) and (date_fecha > dosis.fechaFin):
+
+                        gmailUser = '***'
+                        gmailPassword = '***'
+                
+                        emailRecipient = paciente.email
+
+
+                        cuerpo = str(dosis.fechaFin) + 'Hola ' + paciente.nombre.encode('utf-8') + ' ' + paciente.apellidos.encode('utf-8') + '.' + 'Desde la clínica de reproducción asistida le recordamos que su dosis acaba pronto.'
+
+                        msg = MIMEMultipart()
+                        msg['From'] = gmailUser
+                        msg['To'] = emailRecipient
+                        msg['Subject'] = "Notificacin"
+                        msg.attach(MIMEText(cuerpo))
+
+                        mailServer = smtplib.SMTP('smtp.gmail.com', 587)
+                        mailServer.ehlo()
+                        mailServer.starttls()
+                        mailServer.ehlo()
+                        mailServer.login(gmailUser, gmailPassword)
+                        mailServer.sendmail(gmailUser, emailRecipient, msg.as_string())
+                        mailServer.close()
+
+                        dosis.alertaEnviada = True
+

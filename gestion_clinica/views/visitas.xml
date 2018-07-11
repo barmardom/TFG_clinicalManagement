@@ -67,14 +67,16 @@
                                                         <field name="frecuencia" />
                                                         <field name="duraccion" />
                                                         <field name="eficiencia" />
+                                                        <field name="especificaciones" />
+                                                        <field name="alertaEnviada" />
                                                     </group>
                                                 </form>
                                                 <tree>
-                                                    <field name="fechaInicio" />
-                                                    <field name="fechaFin" />
-                                                    <field name="cantidad" />
-                                                    <field name="frecuencia" />
-                                                    <field name="eficiencia" />
+                                                    <field name="fechaInicio"/>
+                                                    <field name="fechaFin"/>
+                                                    <field name="frecuencia"/>
+                                                    <field name="cancelado"/>
+                                                    <field name="alertaEnviada"/>                                        
                                                 </tree>
                                             </field>
                                         </group>

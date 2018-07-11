@@ -34,6 +34,7 @@
         'views/medicamentos.xml',
         'views/visitas.xml',
         'views/estadisticas.xml',
+        'views/alertas.xml',
 
     ],
     'css': [
