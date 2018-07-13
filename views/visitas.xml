@@ -34,7 +34,7 @@
             <form string="Lista de Visitas">
                 <sheet>
                     <label for="name" string="Paciente" />
-                    <h1 class="colorGeneral">
+                    <h1 class="colorGeneral"> 
                         <field name="paciente_id"/>
                     </h1>
                     <notebook>

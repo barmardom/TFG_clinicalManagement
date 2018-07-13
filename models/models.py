@@ -16,32 +16,33 @@ class Medicamento(models.Model):
 
     nombre = fields.Char(
         string="Nombre",
+        help='Nombre completo del fármaco',
         size=60,
         required=True,
-        help='Nombre del medicamento',
         translate=True
     )
     codigo = fields.Char(
         string="Código",
+        help='Código de identificacion único del fármaco',
         size=9,
-        required=True,
-        help='Codigo del medicamento'
+        required=True
     )
     presentacion = fields.Char(
         string='Presentacion',
-        help='Presentacion del medicamento'
+        help='´Tipo de fármaco',
+        size=40,
     )
     cantidad = fields.Char(
         string='Cantidad',
-        help='Cantidad de medicamento'
+        help='Cantidad de dosis del fármaco'
     )
     unidad = fields.Char(
         string='Unidad',
-        help='Unidad de la cantidad'
+        help='Unidad en la que se expresa la cantidad de fármaco'
     )
     enlace = fields.Char(
         string='Enlace',
-        help='Enlace del medicamento'
+        help='Enlace del fármaco a una web informativa'
     )
     dosis_ids = fields.One2many('gestion_clinica.dosis', 'medicamento_id', string='Medicamento de la dosis')
 
@@ -53,15 +54,15 @@ class Paciente(models.Model):
 
     nombre = fields.Char(
         string="Nombre",
+        help='Nombre del paciente',
         size=20,
         required=True,
-        help='Nombre del o la paciente'
     )
     apellidos = fields.Char(
         string="Apellidos",
+        help='Apellidos del o la paciente',
         size=50,
-        required=True,
-        help='Apellidos del o la paciente'
+        required=True
     )
     nif = fields.Char(
 		string='NIF',
@@ -98,10 +99,8 @@ class Paciente(models.Model):
     patologia_ids = fields.One2many('gestion_clinica.patologia', 'paciente_id', string='Patologia')
     visita_ids = fields.One2many('gestion_clinica.visita', 'paciente_id', string='Visita')
     #REVISAR
-    dosis_ids = fields.One2many('gestion_clinica.dosis', 'paciente_id', string='Dosis2')
-    #alertas_ids = fields.One2many('gestion_clinica.alerta', 'paciente_id', string='Alerta')
-    #todasDosis = fields.One2many(related='visita_ids.dosis_ids', store=True)
-    
+    dosis_ids = fields.One2many('gestion_clinica.dosis', 'paciente_id', string='Dosis')
+
 class Patologia(models.Model):
     _name = 'gestion_clinica.patologia'
     _description = 'Patologias'
@@ -229,7 +228,7 @@ class Dosis(models.Model):
     visita_id = fields.Many2one('gestion_clinica.visita', store=True, ondelete='cascade', string="Visita")
     medicamento_id = fields.Many2one('gestion_clinica.medicamento', string="Medicamento", required=True)
     paciente_id = fields.Many2one(related='visita_id.paciente_id', string="Paciente", required=True, readonly=True) 
-    #lambda self: self.env['gestion_clinica.paciente'].search([('nif','=', self.visita_id.paciente_id.nif)], limit=1) default=lambda self: self.env['gestion_clinica.paciente'].search([('id', '=', self.idPaciente)], limit=1)
+    #default=lambda self: self.env['gestion_clinica.paciente'].search([('id', '=', self.idPaciente)], limit=1)
    
 
 
@@ -238,43 +237,69 @@ class Alerta(models.TransientModel):
     _name = 'gestion_clinica.alerta'
     _description = 'Alerta'
 
-
-    #paciente_id = fields.Many2one('gestion_clinica.paciente', ondelete='cascade', string="Paciente")
-    #dosis_id = fields.Many2one('gestion_clinica.dosis', ondelete='cascade', string="Dosis")
-    #fechaFinDosis = fields.Date(related='dosis_id.fechaFin', store=True, string="Doctor", readonly=True)
-
     @api.multi
     def envia_email(self):
+        #url = "http://localhost/web?debug=1#id=2&view_type=form&model=gestion_clinica.paciente&menu_id=235&action=264"
+        #uri = urlparse(url)
+        #qs = uri.fragment
+        #final = parse_qs(qs).get('id', None)
 
-            model = self.env['gestion_clinica.paciente']        # retrieve an instance of MODEL
-            pacientes = model.search([])                        # search returns a recordset
-            for paciente in pacientes:                          # iterate over the records
-                for dosis in paciente.dosis_ids:
-                    fecha_sumada = datetime.datetime.now() + datetime.timedelta(7)
-                    date_fecha = datetime.datetime.strftime(fecha_sumada, '%Y-%m-%d')
-                    if (dosis.alertaEnviada ==False) and (date_fecha > dosis.fechaFin):
+        pacientes = self.env['gestion_clinica.paciente'].search([]) #Caso de que se quiera limitar la busqueda: .search([('id','=', '2')], limit=1)
 
-                        gmailUser = '***'
-                        gmailPassword = '***'
-                
-                        emailRecipient = paciente.email
+        for paciente in pacientes:
+            for dosis in paciente.dosis_ids:
+                fecha_sumada = datetime.datetime.now() + datetime.timedelta(7)
+                date_fecha = datetime.datetime.strftime(fecha_sumada, '%Y-%m-%d')
+                fecha_hoy = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
+                if (dosis.cancelado == False) and (dosis.alertaEnviada ==False) and (date_fecha > dosis.fechaFin) and (dosis.fechaFin >= fecha_hoy):
+
+                    gmailUser = '***'
+                    gmailPassword = '***'
+                    recipient = paciente.email
+
+                    asunto = dosis.visita_id.asunto.encode('utf-8')
+                    medicamento = dosis.medicamento_id.nombre.encode('utf-8')
+                    fechaF = str(dosis.fechaFin)
+                    nombreCompleto = paciente.nombre.encode('utf-8') + ' ' + paciente.apellidos.encode('utf-8')
+                    nombreDoctor = dosis.visita_id.paciente_id.doctor_id.name.encode('utf-8')
+                    html = """\
+                    <html>
+                    <head></head>
+                    <body>
+                    <tr>
+                    <td>
+                      <table border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td>
+                            <p>Hola <strong>{nombreCompleto}</strong>,</p>
+                            <p>Desde Inebir le recordamos que su tratamiento actual con <i>"{medicamento}"</i> relacionado con la visita <i>{asunto}</i>, termina muy pronto <strong>{fechaF}</strong>.</p>
+                            <p>No dude en contactar con nosotros o con su doctor ({nombreDoctor}) ante cualquier duda.</p>
+                            <p>Coordiales saludos, el equipo de Inebir.</p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    </tr>
+                    </body>
+                    </html>
+                    """.format(nombreCompleto=nombreCompleto, medicamento=medicamento, asunto=asunto, fechaF=fechaF, nombreDoctor=nombreDoctor)
+
+                    msg = MIMEMultipart()
+                    msg['From'] = gmailUser
+                    msg['To'] = recipient
+                    msg['Subject'] = "Notificacion"
+                    cuerpo = MIMEText(html, 'html')
+                    msg.attach(cuerpo)
+
+                    mailServer = smtplib.SMTP('smtp.gmail.com', 587)
+                    mailServer.ehlo()
+                    mailServer.starttls()
+                    mailServer.ehlo()
+                    mailServer.login(gmailUser, gmailPassword)
+                    mailServer.sendmail(gmailUser, recipient, msg.as_string())
+                    mailServer.close()
+
+                    dosis.alertaEnviada = True
 
 
-                        cuerpo = str(dosis.fechaFin) + 'Hola ' + paciente.nombre.encode('utf-8') + ' ' + paciente.apellidos.encode('utf-8') + '.' + 'Desde la clínica de reproducción asistida le recordamos que su dosis acaba pronto.'
-
-                        msg = MIMEMultipart()
-                        msg['From'] = gmailUser
-                        msg['To'] = emailRecipient
-                        msg['Subject'] = "Notificacin"
-                        msg.attach(MIMEText(cuerpo))
-
-                        mailServer = smtplib.SMTP('smtp.gmail.com', 587)
-                        mailServer.ehlo()
-                        mailServer.starttls()
-                        mailServer.ehlo()
-                        mailServer.login(gmailUser, gmailPassword)
-                        mailServer.sendmail(gmailUser, emailRecipient, msg.as_string())
-                        mailServer.close()
-
-                        dosis.alertaEnviada = True
 
