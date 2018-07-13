@@ -29,8 +29,9 @@ class Medicamento(models.Model):
     )
     presentacion = fields.Char(
         string='Presentacion',
-        help='´Tipo de fármaco',
+        help='Tipo de fármaco',
         size=40,
+        required=True,
     )
     cantidad = fields.Char(
         string='Cantidad',
@@ -44,13 +45,18 @@ class Medicamento(models.Model):
         string='Enlace',
         help='Enlace del fármaco a una web informativa'
     )
+    estado = fields.Selection(
+        [('activo','Activo'),('retirado','Retirado')],
+        string='Estado',
+        default='activo',
+        help='Informa si el fármaco está activo o retirado'
+    )
     dosis_ids = fields.One2many('gestion_clinica.dosis', 'medicamento_id', string='Medicamento de la dosis')
 
 class Paciente(models.Model):
     _name = 'gestion_clinica.paciente'
     _description = 'Pacientes'
     _rec_name = 'nif'
-
 
     nombre = fields.Char(
         string="Nombre",
@@ -60,32 +66,33 @@ class Paciente(models.Model):
     )
     apellidos = fields.Char(
         string="Apellidos",
-        help='Apellidos del o la paciente',
+        help='Apellidos del paciente',
         size=50,
         required=True
     )
     nif = fields.Char(
 		string='NIF',
-		help='Documento de identificacion del o la paciente',
+		help='Documento de identificacion del paciente',
 		required=True
 	)
     fechaNacimiento = fields.Date(
 		string='Fecha de nacimiento',
-		help='Fecha de nacimiento del o la paciente',
+		help='Día, mes y año de nacimiento del paciente',
         default=time.strftime('1900-01-01'),
 		required=True
 	)
     genero = fields.Selection(
 		[('femenino','Femenino'),('masculino','Masculino')],
-        string='Género'
+        string='Género',
+        required=True
 	)
     telefono = fields.Char(
 		string='Teléfono',
-		help='Télefono del o la paciente'
+		help='Número de teléfono del paciente'
 	)
     email = fields.Char(
 		string='Email',
-		help='Correo del o la paciente'
+		help='Correo electrónico del paciente'
 	)
     poblacion = fields.Char(
         string='Población',
@@ -96,10 +103,9 @@ class Paciente(models.Model):
         help='Donante de ovulos o semen'
     )
     doctor_id = fields.Many2one('res.users', string='Doctor', required=True)
-    patologia_ids = fields.One2many('gestion_clinica.patologia', 'paciente_id', string='Patologia')
-    visita_ids = fields.One2many('gestion_clinica.visita', 'paciente_id', string='Visita')
-    #REVISAR
-    dosis_ids = fields.One2many('gestion_clinica.dosis', 'paciente_id', string='Dosis')
+    patologia_ids = fields.One2many('gestion_clinica.patologia', 'paciente_id', string='Patologia', ondelete='cascade')
+    visita_ids = fields.One2many('gestion_clinica.visita', 'paciente_id', string='Visita', ondelete='cascade')
+    dosis_ids = fields.One2many('gestion_clinica.dosis', 'paciente_id', string='Dosis', ondelete='cascade')
 
 class Patologia(models.Model):
     _name = 'gestion_clinica.patologia'
@@ -107,15 +113,15 @@ class Patologia(models.Model):
     
     nombre = fields.Char(
         string="Nombre",
+        help='Nombre de patologia',
         size=20,
-        required=True,
-        help='Nombre de patologia'
+        required=True
     )
     descripcion = fields.Text(
         string="Descripción",
         help='Descripción de patologia'
     )
-    paciente_id = fields.Many2one('gestion_clinica.paciente', ondelete='cascade', string="Paciente")
+    paciente_id = fields.Many2one('gestion_clinica.paciente', string="Paciente", required=True)
 
 class Visita(models.Model):
     _name = 'gestion_clinica.visita'
@@ -126,13 +132,13 @@ class Visita(models.Model):
     fecha = fields.Date(
         string='Fecha',
         help='Fecha de la visita',
-        required=True
+        required=True,
     )
     asunto = fields.Char(
         string="Asunto",
+        help='Tema relacionado con la visita',
         size=20,
-        required=True,
-        help='Tema relacionado con la visita'
+        required=True   
     )
     descripcion = fields.Text(
         string="Descripción",
@@ -140,15 +146,15 @@ class Visita(models.Model):
     )
     tratamiento = fields.Boolean(
         string='Tratamiento',
-        help='Tratamiento'
+        help='Si existe o no tratamiento con dosis para la visita'
     )
     pruebas = fields.Boolean(
         string='Pruebas',
-        help='Pruebas médicas a realizar'
+        help='Pruebas médicas a realizar, de existir se detallan en la descripción de la visita'
     )
-    paciente_id = fields.Many2one('gestion_clinica.paciente', ondelete='cascade', string="Paciente")
-    dosis_ids = fields.One2many('gestion_clinica.dosis', 'visita_id', string='Dosis relacionadas')
-    #Otras
+    paciente_id = fields.Many2one('gestion_clinica.paciente', string="Paciente", required=True)
+    dosis_ids = fields.One2many('gestion_clinica.dosis', 'visita_id', string='Dosis relacionadas', ondelete='cascade')
+    #Derivadas
     nombreDoctor = fields.Char(related='paciente_id.doctor_id.name', store=True, string="Doctor", readonly=True)
     idDoctor = fields.Integer(related='paciente_id.doctor_id.id', store=True, string="ID Doctor", readonly=True)
 
@@ -183,46 +189,50 @@ class Dosis(models.Model):
 
     fechaInicio = fields.Date(
         string='Fecha de inicio',
-        help='Fecha de inicio',
+        help='Fecha inicial en la que se comienza a tomar la dosis',
         required=True
     )
     duraccion = fields.Integer(
         string="Duraccion",
-        required=True,
-        help='Duraccion en días del tratamiento con la dosis'
+        help='Duraccion en días del tratamiento con la dosis',
+        required=True   
     )
     cantidad = fields.Integer(
-        string='Cantidad'
+        string='Cantidad',
+        help='Número de tomas o aplicaciones en aplicación'
     )
     tipo = fields.Selection(
-        [('toma','Toma'),('4','Aplicación')],
-        string='Tipo'
+        [('toma','Toma'),('aplicacion','Aplicación')],
+        string='Tipo',
+        help='Forma de aplicar la dosis'
     )
     frecuencia = fields.Selection(
         [('2','2 horas'),('4','4 horas'),('8','8 horas'),('12','12 horas'),('24','24 horas')],
         string='Frecuencia',
-        help='Cada cuanto tiempo se toma la dosis'
+        help='Periodo de tiempo en el se toma la dosis'
     )
     cancelado = fields.Boolean(
         string='Cancelado',
-        help='Cancelado'
+        help='Cancelación o no de la dosis'
     )
     eficiencia = fields.Selection(
         [('muyBaja','Muy baja'),('baja','Baja'),('media','Media'),('alat','Alta'),('muyAlta','Muy alta')],
-        string='Eficiencia'
-    )
-    fechaFin = fields.Date('Fecha de fin',
-        compute='_get_fecha_fin',
-        readonly=True,
-        help='Fecha de fin para la toma de la dosis'
+        string='Eficacía',
+        help='Eficacía del medicamento asoiciado en la dosis sobre el paciente'
     )
     especificaciones = fields.Text(
         string="Especificaciones",
-        help='Especificaciones'
+        help='Especificaciones y/o detalles'
     )
     alertaEnviada = fields.Boolean(
-        string='Alerta enviada',
-        help='Alerta',
+        string='Notificación',
+        help='Informa si se ha enviado o no notificación al paciente sobre la proximidad de fin de la dosis',
+        readonly=True
+    )
+    #Derivada
+    fechaFin = fields.Date('Fecha de fin',
+        compute='_get_fecha_fin',
+        help='Fecha de fin del tratamiento de la dosis',
         readonly=True
     )
     visita_id = fields.Many2one('gestion_clinica.visita', store=True, ondelete='cascade', string="Visita")
@@ -230,9 +240,6 @@ class Dosis(models.Model):
     paciente_id = fields.Many2one(related='visita_id.paciente_id', string="Paciente", required=True, readonly=True) 
     #default=lambda self: self.env['gestion_clinica.paciente'].search([('id', '=', self.idPaciente)], limit=1)
    
-
-
-
 class Alerta(models.TransientModel):
     _name = 'gestion_clinica.alerta'
     _description = 'Alerta'

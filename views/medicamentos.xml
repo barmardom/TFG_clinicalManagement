@@ -42,6 +42,7 @@
                                     <field name="cantidad"/>
                                     <field name="unidad"/>
                                     <field name="enlace" widget="url"/>
+                                    <field name="estado"/>
                                 </group>
                             </group>
                         </page>
