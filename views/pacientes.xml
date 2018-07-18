@@ -2,12 +2,6 @@
 <!DOCTYPE xml>
 <odoo>
   <data>
-    <template id="assets_backend" name="gestion_clinica css assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/gestion_clinica/static/src/css/style.css"/>
-        </xpath>
-    </template>
-
 
     <!-- Tree view of pacientes -->
     <record id="gestion_clinica.pacientes_tree" model="ir.ui.view">
@@ -25,6 +19,7 @@
                 <field name="email"/>
                 <field name="doctor_id"/>
                 <field name="visita_ids"/>
+                <field name="dosis_ids"/>
             </tree>
         </field>
     </record>

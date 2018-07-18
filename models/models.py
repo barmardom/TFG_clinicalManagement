@@ -51,7 +51,59 @@ class Medicamento(models.Model):
         default='activo',
         help='Informa si el fármaco está activo o retirado'
     )
+    #Derivadas
+    eficaciaMedia = fields.Integer(
+        string='Eficacia',
+        help='Eficacía general del medicamento',
+        readonly=True,
+        compute ='calcula_eficacia'
+    )
+    dosisPuntuadas = fields.Integer(
+        string='Dosis relacionadas y evaluadas',
+        help='Muestra el número de dosis relacionadas con este medicamento que el doctor ha puntuado y que por tanto se han tenido en cuenta para calcular la eficacia del fármaco.',
+        readonly=True,
+        compute ='calcula_dosis_puntuadas'
+    )
+    totalDosis = fields.Integer(
+        string='Dosis relacionadas',
+        readonly=True,
+        compute ='calcula_dosis_totales'
+    )
     dosis_ids = fields.One2many('gestion_clinica.dosis', 'medicamento_id', string='Medicamento de la dosis')
+
+    @api.multi
+    def calcula_eficacia(self):
+        suma_eficacia = 0
+        cont = 0
+        existenDosis = False
+
+        for dosis in self.dosis_ids:
+            if dosis.eficiencia:
+                eficacia = int(dosis.eficiencia)
+                suma_eficacia = suma_eficacia + eficacia
+                cont = cont + 1
+        
+        if (cont != 0):
+            res = int(suma_eficacia/cont)
+            self.eficaciaMedia = res
+
+    @api.multi
+    def calcula_dosis_puntuadas(self):
+        cont = 0
+    
+        for dosis in self.dosis_ids:
+            if dosis.eficiencia:
+                cont = cont + 1
+        
+        if (cont != 0):
+            self.dosisPuntuadas = cont
+
+    @api.one
+    @api.depends('dosis_ids')
+    def calcula_dosis_totales(self):
+        self.totalDosis = len(self.dosis_ids)
+
+
 
 class Paciente(models.Model):
     _name = 'gestion_clinica.paciente'
@@ -216,7 +268,7 @@ class Dosis(models.Model):
         help='Cancelación o no de la dosis'
     )
     eficiencia = fields.Selection(
-        [('muyBaja','Muy baja'),('baja','Baja'),('media','Media'),('alat','Alta'),('muyAlta','Muy alta')],
+        [('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8'),('9','9'),('10','10')],
         string='Eficacía',
         help='Eficacía del medicamento asoiciado en la dosis sobre el paciente'
     )
@@ -231,7 +283,7 @@ class Dosis(models.Model):
     )
     #Derivada
     fechaFin = fields.Date('Fecha de fin',
-        compute='_get_fecha_fin',
+        compute ='_get_fecha_fin',
         help='Fecha de fin del tratamiento de la dosis',
         readonly=True
     )
@@ -251,7 +303,7 @@ class Alerta(models.TransientModel):
         #qs = uri.fragment
         #final = parse_qs(qs).get('id', None)
 
-        pacientes = self.env['gestion_clinica.paciente'].search([]) #Caso de que se quiera limitar la busqueda: .search([('id','=', '2')], limit=1)
+        pacientes = self.env['gestion_clinica.paciente'].search([]) #Ya filtra por los pacientes que vel el doctor logeado. Caso de que se quiera limitar la busqueda: .search([('id','=', '2')], limit=1)
 
         for paciente in pacientes:
             for dosis in paciente.dosis_ids:
@@ -309,4 +361,27 @@ class Alerta(models.TransientModel):
                     dosis.alertaEnviada = True
 
 
+###############################################################################
 
+
+class Estadistica(models.TransientModel):
+    _name = 'gestion_clinica_estadistica'
+    _description = 'Estadistica'
+
+    totalPacientes = fields.Integer(
+        string='Número de pacientes',
+        readonly=True,
+        default = lambda self: len(self.env['gestion_clinica.paciente'].search([]))
+    )
+
+    totalMujeres = fields.Integer(
+        string='Mujeres',
+        readonly=True,
+        default = lambda self: len(self.env['gestion_clinica.paciente'].search([('genero', '=', 'femenino')]))
+    )
+
+    totalHombres = fields.Integer(
+        string='Hombres',
+        readonly=True,
+        default = lambda self: len(self.env['gestion_clinica.paciente'].search([('genero', '=', 'masculino')]))
+    )

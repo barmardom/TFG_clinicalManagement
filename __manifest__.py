@@ -29,8 +29,9 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
+        #'security/ir.model.access.csv',
         'security/access.xml',
+        'views/templates.xml',
         'views/pacientes.xml',
         'views/medicamentos.xml',
         'views/visitas.xml',
@@ -41,6 +42,12 @@
     'css': [
         'static/src/css/style.css'
     ],
+    'js': [
+        'static/src/js/javascriptfile.js'
+    ],
+    #'qweb': [
+    #    'static/src/xml/qweb_file.xml',
+    #],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',

@@ -2,18 +2,39 @@
 <!DOCTYPE xml>
 <odoo>
   <data>
-    <template id="assets_backend" name="gestion_clinica css assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/gestion_clinica/static/src/css/style.css"/>
-        </xpath>
-    </template>
+
+    <record id="gestion_clinica.estadisticas_general" model="ir.ui.view">
+        <field name="name">alertas.general</field>
+        <field name="model">gestion_clinica_estadistica</field>
+        <field name="arch" type="xml">
+            <form string="estadistica" create="false">
+              <sheet>
+                <h1 class="colorGeneral">Estadísticas del sistema</h1>
+                <separator/>
+                  <notebook>
+                      <page string="Informacón General">
+                          <group>
+                              <group colspan="4" col="4">
+                                  <field name="totalPacientes"/>
+                                  <field name="totalMujeres"/>
+                                  <field name="totalHombres"/>
+                              </group>  
+                              <button custom="click" string="Carga gráfico"/>
+                              <div id="piechart" style="width: 900px; height: 500px;"></div>
+                          </group>
+                      </page>
+                  </notebook>
+              </sheet>
+            </form>
+        </field>
+    </record>
 
 
-    <!--<record model="ir.actions.act_window" id="gestion_clinica.action_windowEstadisticas">
-      <field name="name">Visitas</field>
-      <field name="res_model">gestion_clinica.visita</field>
-      <field name="view_mode">tree,form</field>
-    </record> -->
+    <record model="ir.actions.act_window" id="gestion_clinica.action_windowEstadisticas2">
+      <field name="name">Estadisticas</field>
+      <field name="res_model">gestion_clinica_estadistica</field>
+      <field name="view_mode">form</field>
+    </record>
     
     <!-- menu categories -->
 
@@ -21,11 +42,8 @@
 
     <!-- actions -->
 
-    <menuitem name="Efectividad de productos" id="gestion_clinica.estadisticas_medicamentos" parent="gestion_clinica.estadisticas"
-              action="gestion_clinica.action_windowMedicamentos"/>
-
-    <menuitem name="Informes" id="gestion_clinica.estadisticas_informes" parent="gestion_clinica.estadisticas"
-              action="gestion_clinica.action_windowVisitas"/>
+    <menuitem name="Prueba estadisticas" id="gestion_clinica.estadistica_1" parent="gestion_clinica.estadisticas"
+              action="gestion_clinica.action_windowEstadisticas2"/>
 
 
             
