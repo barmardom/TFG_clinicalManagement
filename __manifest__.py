@@ -29,7 +29,7 @@
 
     # always loaded
     'data': [
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'security/access.xml',
         'views/templates.xml',
         'views/pacientes.xml',

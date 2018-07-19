@@ -5,7 +5,7 @@
 
     <record id="gestion_clinica.estadisticas_general" model="ir.ui.view">
         <field name="name">alertas.general</field>
-        <field name="model">gestion_clinica_estadistica</field>
+        <field name="model">gestion_clinica.estadistica</field>
         <field name="arch" type="xml">
             <form string="estadistica" create="false">
               <sheet>
@@ -32,13 +32,13 @@
 
     <record model="ir.actions.act_window" id="gestion_clinica.action_windowEstadisticas2">
       <field name="name">Estadisticas</field>
-      <field name="res_model">gestion_clinica_estadistica</field>
+      <field name="res_model">gestion_clinica.estadistica</field>
       <field name="view_mode">form</field>
     </record>
     
     <!-- menu categories -->
 
-    <menuitem name="Estadísticas" id="gestion_clinica.estadisticas" parent="gestion_clinica.menu_root"/>
+    <menuitem name="Estadísticas" id="gestion_clinica.estadisticas" parent="gestion_clinica.menu_root" groups="base.group_system,group_clinica_distribuidor"/>
 
     <!-- actions -->
 

@@ -192,15 +192,13 @@
 
     <!-- menu categories -->
 
-    <menuitem name="Pacientes" id="gestion_clinica.pacientes" parent="gestion_clinica.menu_root"/>
+    <menuitem name="Pacientes" id="gestion_clinica.pacientes" parent="gestion_clinica.menu_root" groups="base.group_system,group_clinica_doctor"/>
 
     <!-- actions -->
 
     <menuitem name="Mis pacientes" id="gestion_clinica.pacientes_list" parent="gestion_clinica.pacientes"
               action="gestion_clinica.action_windowPacientes"/>
-
-
-              
+            
     
 
   </data>

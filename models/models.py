@@ -365,7 +365,7 @@ class Alerta(models.TransientModel):
 
 
 class Estadistica(models.TransientModel):
-    _name = 'gestion_clinica_estadistica'
+    _name = 'gestion_clinica.estadistica'
     _description = 'Estadistica'
 
     totalPacientes = fields.Integer(
