@@ -47,7 +47,7 @@
                                         </group>
                                         <group colspan='4' col='2'>
                                             <field name="dosis_ids">
-                                                <form string="Patologías del paciente">
+                                                <form string="Dosis del paciente">
                                                     <group>
                                                         <field name="medicamento_id" />
                                                     </group>
@@ -94,8 +94,8 @@
     </record>
     
 
-    <menuitem name="Últimas visitas" id="gestion_clinica.visitas_list" parent="gestion_clinica.pacientes"
-              action="gestion_clinica.action_windowVisitas"/>
+    <menuitem name="Visitas recientes" id="gestion_clinica.visitas_list" parent="gestion_clinica.pacientes"
+              action="gestion_clinica.action_windowVisitas" sequence="5"/>
 
 
             

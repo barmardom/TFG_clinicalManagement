@@ -38,12 +38,12 @@
     
     <!-- menu categories -->
 
-    <menuitem name="Estadísticas" id="gestion_clinica.estadisticas" parent="gestion_clinica.menu_root" groups="base.group_system,group_clinica_distribuidor"/>
+    <menuitem name="Sistema estadístico" id="gestion_clinica.estadisticas" parent="gestion_clinica.menu_root" groups="base.group_system,group_clinica_distribuidor" sequence="3"/>
 
     <!-- actions -->
 
-    <menuitem name="Prueba estadisticas" id="gestion_clinica.estadistica_1" parent="gestion_clinica.estadisticas"
-              action="gestion_clinica.action_windowEstadisticas2"/>
+    <menuitem name="Estadísticas globales" id="gestion_clinica.estadistica_1" parent="gestion_clinica.estadisticas"
+              action="gestion_clinica.action_windowEstadisticas2" sequence="9"/>
 
 
             

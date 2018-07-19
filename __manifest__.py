@@ -35,9 +35,9 @@
         'views/pacientes.xml',
         'views/medicamentos.xml',
         'views/visitas.xml',
-        'views/estadisticas.xml',
+        'views/dosis.xml',
         'views/alertas.xml',
-
+        'views/estadisticas.xml',
     ],
     'css': [
         'static/src/css/style.css'

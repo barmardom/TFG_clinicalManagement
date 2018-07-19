@@ -166,7 +166,7 @@ class Patologia(models.Model):
     nombre = fields.Char(
         string="Nombre",
         help='Nombre de patologia',
-        size=20,
+        size=60,
         required=True
     )
     descripcion = fields.Text(
@@ -189,7 +189,7 @@ class Visita(models.Model):
     asunto = fields.Char(
         string="Asunto",
         help='Tema relacionado con la visita',
-        size=20,
+        size=60,
         required=True   
     )
     descripcion = fields.Text(
@@ -269,7 +269,7 @@ class Dosis(models.Model):
     )
     eficiencia = fields.Selection(
         [('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8'),('9','9'),('10','10')],
-        string='Eficacía',
+        string='Eficacia',
         help='Eficacía del medicamento asoiciado en la dosis sobre el paciente'
     )
     especificaciones = fields.Text(
@@ -287,7 +287,7 @@ class Dosis(models.Model):
         help='Fecha de fin del tratamiento de la dosis',
         readonly=True
     )
-    visita_id = fields.Many2one('gestion_clinica.visita', store=True, ondelete='cascade', string="Visita")
+    visita_id = fields.Many2one('gestion_clinica.visita', store=True, ondelete='cascade', string="Visita", required=True)
     medicamento_id = fields.Many2one('gestion_clinica.medicamento', string="Medicamento", required=True)
     paciente_id = fields.Many2one(related='visita_id.paciente_id', string="Paciente", required=True, readonly=True) 
     #default=lambda self: self.env['gestion_clinica.paciente'].search([('id', '=', self.idPaciente)], limit=1)

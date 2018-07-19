@@ -35,7 +35,7 @@
 
 
     <menuitem name="Alertas" id="gestion_clinica.alertas_list" parent="gestion_clinica.pacientes"
-              action="gestion_clinica.action_windowAlertas"/>s"/>
+              action="gestion_clinica.action_windowAlertas" sequence="7"/>
 
 
             
