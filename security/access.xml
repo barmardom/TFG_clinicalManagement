@@ -8,9 +8,9 @@
         <record id="group_clinica_distribuidor" model="res.groups">
             <field name="name">Distrubuidor</field>
         </record>
-        <!--<record id="group_clinica_paciente" model="res.groups">
-            <field name="name">Paciente</field>
-        </record> -->
+        <record id="group_clinica_jefe" model="res.groups">
+            <field name="name">Jefe de Farmacia</field>
+        </record>
           
         <!-- FILTRAR MIS PACIENTES -->  
         <record id="group_clinica_pacientes_doctor" model="ir.rule">
