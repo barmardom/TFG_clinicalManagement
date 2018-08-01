@@ -2,9 +2,13 @@
 
 Se presenta el sistema por el cual se desea gestionar medicamentos, dosis, y eficacia de fármacos en pacientes de una clínica de reproducción asistida. Desarrollado con el ERP Odoo el sistema permite interactuar a dos roles.\\
 
-### El rol de doctor puede:
+### El rol de jefe de farmacia puede:
 
 - Acceder al sistema de medicamentos, donde se le presenta un formulario para registrar nuevos fármacos en la base de datos y al listado completo de ellos con información concreta de cada uno.
+
+### El rol de doctor puede:
+
+- Acceder al sistema de medicamentos, donde se le presenta un listado completo de  ellos con información concreta de cada uno, así como algunas estadísticas particulares.
 - Acceder al sistema de pacientes, donde se le presenta un listado con todos ellos así como sus relaciones a patologías, visitas, dosis y alertas.
 
 ### El rol de distribuidor puede:
