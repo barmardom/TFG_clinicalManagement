@@ -12,15 +12,22 @@
                 <h1 class="colorGeneral">Estadísticas del sistema</h1>
                 <separator/>
                   <notebook>
-                      <page string="Informacón General">
+                      <page string="Clientes/Pacientes">
                           <group>
                               <group colspan="4" col="4">
                                   <field name="totalPacientes"/>
                                   <field name="totalMujeres"/>
                                   <field name="totalHombres"/>
                               </group>  
-                              <button custom="click" string="Carga gráfico"/>
-                              <div id="piechart" style="width: 900px; height: 500px;"></div>
+                              <button name="carga_graficos" string="Cargar gráficos" type="object" custom="click"/>
+                              <div id="piechart" style="width: 800px; height: 400px;"></div>
+                          </group>
+                      </page>
+                      <page string="Medicamentos">
+                          <group>
+                              <group colspan="2" col="2">
+                                  <field name="masRecetados"/>
+                              </group>  
                           </group>
                       </page>
                   </notebook>

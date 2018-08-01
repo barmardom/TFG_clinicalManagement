@@ -261,7 +261,7 @@ class Dosis(models.Model):
     frecuencia = fields.Selection(
         [('2','2 horas'),('4','4 horas'),('8','8 horas'),('12','12 horas'),('24','24 horas')],
         string='Frecuencia',
-        help='Periodo de tiempo en el se toma la dosis'
+        help='Periodo de tiempo que datalla cada cuanto se debe de tomar la dosis'
     )
     cancelado = fields.Boolean(
         string='Cancelado',
@@ -313,7 +313,7 @@ class Alerta(models.TransientModel):
                 if (dosis.cancelado == False) and (dosis.alertaEnviada ==False) and (date_fecha > dosis.fechaFin) and (dosis.fechaFin >= fecha_hoy):
 
                     gmailUser = '***'
-                    gmailPassword = '***'
+                    gmailPassword = '**'
                     recipient = paciente.email
 
                     asunto = dosis.visita_id.asunto.encode('utf-8')
@@ -385,3 +385,27 @@ class Estadistica(models.TransientModel):
         readonly=True,
         default = lambda self: len(self.env['gestion_clinica.paciente'].search([('genero', '=', 'masculino')]))
     )
+
+    masRecetados = fields.Char(string='Más recetados', default=lambda self: self._cacula_mas_recetados(),readonly=True)
+
+    @api.multi
+    def _cacula_mas_recetados(self):
+        medicamentos = self.env['gestion_clinica.medicamento'].search([])
+        dic = {}
+        res='-'
+
+        if len(medicamentos) > 0:
+            for m in medicamentos:
+                dic[m.codigo] = m.totalDosis
+
+            max_key = max(dic, key=lambda k: dic[k])
+            medicamentoRes = self.env['gestion_clinica.medicamento'].search([('codigo', '=', max_key)])
+
+            if medicamentoRes.totalDosis > 0:
+                res = medicamentoRes.nombre
+
+        return res
+
+    @api.multi
+    def carga_graficos(self):
+        return {"carga": "grafico"}

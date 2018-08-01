@@ -66,7 +66,7 @@
    <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="gestion_clinica.action_windowMedicamentos">
-      <field name="name">Ventana de medicmaentos</field>
+      <field name="name">Ventana de medicamentos</field>
       <field name="res_model">gestion_clinica.medicamento</field>
       <field name="view_mode">tree,form</field>
     </record> 

@@ -29,7 +29,6 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
         'security/access.xml',
         'views/templates.xml',
         'views/pacientes.xml',
@@ -38,6 +37,7 @@
         'views/dosis.xml',
         'views/alertas.xml',
         'views/estadisticas.xml',
+        'security/ir.model.access.csv'
     ],
     'css': [
         'static/src/css/style.css'
