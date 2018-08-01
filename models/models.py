@@ -104,6 +104,11 @@ class Medicamento(models.Model):
         self.totalDosis = len(self.dosis_ids)
 
 
+    @api.multi
+    def carga_prueba(self):
+        return 2
+
+
 
 class Paciente(models.Model):
     _name = 'gestion_clinica.paciente'
@@ -386,7 +391,14 @@ class Estadistica(models.TransientModel):
         default = lambda self: len(self.env['gestion_clinica.paciente'].search([('genero', '=', 'masculino')]))
     )
 
-    masRecetados = fields.Char(string='Más recetados', default=lambda self: self._cacula_mas_recetados(),readonly=True)
+    totalDonantes = fields.Integer(
+        string='Donantes',
+        readonly=True,
+        default = lambda self: len(self.env['gestion_clinica.paciente'].search([('donante', '=', True)]))
+
+    )
+
+    masRecetados = fields.Char(string='Más recetado', default=lambda self: self._cacula_mas_recetados(),readonly=True)
 
     @api.multi
     def _cacula_mas_recetados(self):
@@ -406,6 +418,7 @@ class Estadistica(models.TransientModel):
 
         return res
 
-    @api.multi
-    def carga_graficos(self):
-        return {"carga": "grafico"}
+    @api.model
+    def carga_graficos(self, ids):
+        res = self.totalPacientes
+        return res + 2

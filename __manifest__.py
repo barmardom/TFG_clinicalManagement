@@ -21,7 +21,7 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
-    'category': 'Uncategorized',
+    'category': 'Gestion','Medicina'
     'version': '0.1',
 
     # any module necessary for this one to work correctly
@@ -30,14 +30,14 @@
     # always loaded
     'data': [
         'security/access.xml',
-        'views/templates.xml',
         'views/pacientes.xml',
         'views/medicamentos.xml',
         'views/visitas.xml',
         'views/dosis.xml',
         'views/alertas.xml',
         'views/estadisticas.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'views/templates.xml'
     ],
     'css': [
         'static/src/css/style.css'
@@ -49,7 +49,7 @@
     #    'static/src/xml/qweb_file.xml',
     #],
     # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    #'demo': [
+    #    'demo/demo.xml',
+    #],
 }

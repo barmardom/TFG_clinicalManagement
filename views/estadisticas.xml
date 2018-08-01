@@ -10,24 +10,38 @@
             <form string="estadistica" create="false">
               <sheet>
                 <h1 class="colorGeneral">Estadísticas del sistema</h1>
+                <button class ="btn btn-primary btn-sm o_form_button_save" name="carga_graficos" string="1.Recopilar datos" type="object" custom="cargaDatos"/>
+                                  <button class ="btn btn-primary btn-sm o_form_button_save" name="carga_graficos" string="2.Cargar gráficos" type="object" custom="click"/>
                 <separator/>
                   <notebook>
                       <page string="Clientes/Pacientes">
                           <group>
                               <group colspan="4" col="4">
                                   <field name="totalPacientes"/>
+                                  <field name="totalDonantes"/>
                                   <field name="totalMujeres"/>
                                   <field name="totalHombres"/>
-                              </group>  
-                              <button name="carga_graficos" string="Cargar gráficos" type="object" custom="click"/>
-                              <div id="piechart" style="width: 800px; height: 400px;"></div>
+                              </group>
+                              <group colspan="4" col="4">
+                                  <p>Para ver datos de forma gráfica pulse sobre "Eecopilar datos" y a continuación cobre "Cargar gráficos".</p>
+                              </group>
+                                 <group colspan="4" col="4">
+                                  <p></p>
+                                  
+                                  <p></p>
+                              </group>
+                                <div class="cajaGrafico"><canvas id="pacienteTotales"></canvas></div>
+                                <div class="cajaGrafico"><canvas id="pacientesDonantes"></canvas></div>
+                                <canvas id="pacientesPorEdad"></canvas>
+                                <!--<div id="piechart" style="width: 400px; height: 400px;"></div>-->
                           </group>
                       </page>
                       <page string="Medicamentos">
                           <group>
                               <group colspan="2" col="2">
                                   <field name="masRecetados"/>
-                              </group>  
+                              </group>
+                              <canvas id="medicamentosTratamiento"></canvas>
                           </group>
                       </page>
                   </notebook>
