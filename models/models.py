@@ -373,52 +373,7 @@ class Estadistica(models.TransientModel):
     _name = 'gestion_clinica.estadistica'
     _description = 'Estadistica'
 
-    totalPacientes = fields.Integer(
-        string='Número de pacientes',
-        readonly=True,
-        default = lambda self: len(self.env['gestion_clinica.paciente'].search([]))
-    )
-
-    totalMujeres = fields.Integer(
-        string='Mujeres',
-        readonly=True,
-        default = lambda self: len(self.env['gestion_clinica.paciente'].search([('genero', '=', 'femenino')]))
-    )
-
-    totalHombres = fields.Integer(
-        string='Hombres',
-        readonly=True,
-        default = lambda self: len(self.env['gestion_clinica.paciente'].search([('genero', '=', 'masculino')]))
-    )
-
-    totalDonantes = fields.Integer(
-        string='Donantes',
-        readonly=True,
-        default = lambda self: len(self.env['gestion_clinica.paciente'].search([('donante', '=', True)]))
-
-    )
-
-    masRecetados = fields.Char(string='Más recetado', default=lambda self: self._cacula_mas_recetados(),readonly=True)
 
     @api.multi
-    def _cacula_mas_recetados(self):
-        medicamentos = self.env['gestion_clinica.medicamento'].search([])
-        dic = {}
-        res='-'
-
-        if len(medicamentos) > 0:
-            for m in medicamentos:
-                dic[m.codigo] = m.totalDosis
-
-            max_key = max(dic, key=lambda k: dic[k])
-            medicamentoRes = self.env['gestion_clinica.medicamento'].search([('codigo', '=', max_key)])
-
-            if medicamentoRes.totalDosis > 0:
-                res = medicamentoRes.nombre
-
-        return res
-
-    @api.model
-    def carga_graficos(self, ids):
-        res = self.totalPacientes
-        return res + 2
+    def carga_graficos(self):
+        return 1

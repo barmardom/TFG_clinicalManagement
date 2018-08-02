@@ -9,40 +9,65 @@
         <field name="arch" type="xml">
             <form string="estadistica" create="false">
               <sheet>
-                <h1 class="colorGeneral">Estadísticas del sistema</h1>
-                <button class ="btn btn-primary btn-sm o_form_button_save" name="carga_graficos" string="1.Recopilar datos" type="object" custom="cargaDatos"/>
-                                  <button class ="btn btn-primary btn-sm o_form_button_save" name="carga_graficos" string="2.Cargar gráficos" type="object" custom="click"/>
+                
+                
+                <table style="width:100%">
+                  <tr>
+                    <th><h1 class="colorGeneral">Estadísticas del sistema</h1></th>
+                    <th style="text-align: right;">
+                      <div style="margin-top: 6px;">
+                      <button class ="btn btn-primary btn-sm o_form_button_save botonEs" name="carga_graficos" string="1.Recopilar datos" type="object" custom="cargaDatos"/>
+                      <button id="botonclick" class ="btn btn-primary btn-sm o_form_button_save botonEs" name="carga_graficos" string="2.Cargar gráficos" type="object" custom="click"/>
+                      </div>
+                    </th> 
+                  </tr>
+                </table>
+
                 <separator/>
                   <notebook>
                       <page string="Clientes/Pacientes">
-                          <group>
-                              <group colspan="4" col="4">
-                                  <field name="totalPacientes"/>
-                                  <field name="totalDonantes"/>
-                                  <field name="totalMujeres"/>
-                                  <field name="totalHombres"/>
-                              </group>
-                              <group colspan="4" col="4">
-                                  <p>Para ver datos de forma gráfica pulse sobre "Eecopilar datos" y a continuación cobre "Cargar gráficos".</p>
-                              </group>
-                                 <group colspan="4" col="4">
-                                  <p></p>
-                                  
-                                  <p></p>
-                              </group>
+                              <div id="ocultar_s1" style="display:none;">
+                                <table class="tablaAlmacena">
+
+                                  <tr>
+                                    <td class="estiloFila">Total pacientes</td>
+                                    <td><p class="dato" id="total_pacientes"></p></td> 
+                                     <td class="estiloFila">Donantes</td>
+                                    <td><p class="dato" id="total_donantes"></p></td> 
+                                  </tr>
+
+                                  <tr>
+                                    <td class="estiloFila">Hombres</td>
+                                    <td><p class="dato" id="total_hombres"></p></td> 
+                                     <td class="estiloFila">Mujeres</td>
+                                    <td><p class="dato" id="total_mujeres"></p></td> 
+                                  </tr>
+                                </table>
+                              </div>
+                              
+                              <group>
                                 <div class="cajaGrafico"><canvas id="pacienteTotales"></canvas></div>
                                 <div class="cajaGrafico"><canvas id="pacientesDonantes"></canvas></div>
-                                <canvas id="pacientesPorEdad"></canvas>
-                                <!--<div id="piechart" style="width: 400px; height: 400px;"></div>-->
-                          </group>
-                      </page>
-                      <page string="Medicamentos">
-                          <group>
-                              <group colspan="2" col="2">
-                                  <field name="masRecetados"/>
                               </group>
-                              <canvas id="medicamentosTratamiento"></canvas>
-                          </group>
+                              <h3 id="textoControl" style="text-align: center;">Recopiler los datos si has entrado al sistema o cargarlos directamente si ya lo has recopilado.</h3> 
+                              <canvas id="pacientesPorEdad"></canvas>
+
+                      </page>
+                      <page string="Medicamentos" >
+                            <div id="ocultar_s2" style="display:none;">
+                            <table class="tablaAlmacena">
+                              <tr>
+                                <td class="estiloFila" style="width: 17%;">Más recetado</td>
+                                <td>
+                                  <p style="margin-left: 1%;" id="masRecetado"></p>
+                                </td> 
+                              </tr>
+                            </table>
+                            <h3 id="cartelInformativo" style="text-align: center; style=display:none;">Recopiler los datos si has entrado al sistema o cargarlos directamente si ya lo has recopilado.</h3> 
+                            </div>
+                            <separator/>
+
+                            <canvas id="medicamentosTratamiento"></canvas>
                       </page>
                   </notebook>
               </sheet>

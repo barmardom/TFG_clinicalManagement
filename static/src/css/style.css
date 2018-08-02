@@ -2,11 +2,28 @@
  color: #7c7bad;
 }
 
+.botonEs {
+ margin-right: 1%;
+}
+
+.tablaAlmacena{
+
+	width:100%; margin: 20px 0;
+}
+
+.tablaAlmacena tr{
+	vertical-align: top;
 
 }
 
+.dato{
 
-#cajaGrafico{
-	margin-top: 5%;
+	margin-left: 5%;
+}
+
+.estiloFila{
+
+font-weight:bold; border-right: 1px solid #ddd; width: 25%;
 
 }
+
