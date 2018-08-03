@@ -36,49 +36,65 @@ odoo.define('gestion_clinica.models', function (require) {
       on_click: function() {
         //##################################################### RECOPILAR DATOS
         if(this.node.attrs.custom === "cargaDatos"){
-
+          console.log(control);
           cargador_pacientes();
           cargador_medicamentos();
           control = 1;
               
         }
         //##################################################### CARGAR DATOS
-        if((this.node.attrs.custom === "click") && (control === 1)){
+        if(this.node.attrs.custom === "click"){
 
-                  
-           inserta_datosNumericos();
+           if(control === 1){
 
-           if(totalMujeres > 0 || totalHombres > 0) {
-            drawChart_pacienteTotales(totalMujeres, totalHombres);
-            control++;
-           }
-           if(totalDonantes > 0 || totalNoDonantes > 0){
-            drawChart_pacienteDonantes(totalDonantes, totalNoDonantes);
-            control++
-           }
-           if(pacientesAdultos0 > 0 || pacientesAdultos1 > 0 || pacientesAdultos2 > 0 || pacientesAdultos3 > 0){
-            drawChart_pacientesPorEdad(pacientesAdultos0, pacientesAdultos1, pacientesAdultos2, pacientesAdultos3);
-            control++
-           }
-           if(medicamentosMasRecetados.length > 5){
-            document.getElementById("masRecetado").innerHTML = String(medicamentosMasRecetados[0][0] + " - " + medicamentosMasRecetados[0][3]);
-            drawChart_medicamentosTratamiento(medicamentosMasRecetados[0], medicamentosMasRecetados[1], medicamentosMasRecetados[2], medicamentosMasRecetados[3], medicamentosMasRecetados[4]);
+             inserta_datosNumericos();
+
+             if(totalMujeres > 0 || totalHombres > 0) {
+              drawChart_pacienteTotales(totalMujeres, totalHombres);
+             }
+             if(totalDonantes > 0 || totalNoDonantes > 0){
+              drawChart_pacienteDonantes(totalDonantes, totalNoDonantes);
+             }
+             if(pacientesAdultos0 > 0 || pacientesAdultos1 > 0 || pacientesAdultos2 > 0 || pacientesAdultos3 > 0){
+              drawChart_pacientesPorEdad(pacientesAdultos0, pacientesAdultos1, pacientesAdultos2, pacientesAdultos3);
+             }
+
+             if(medicamentosMasRecetados.length >= 5){
+              document.getElementById("masRecetado").innerHTML = String(medicamentosMasRecetados[0][0] + " - " + medicamentosMasRecetados[0][3]);
+              drawChart_medicamentosTratamiento(medicamentosMasRecetados[0], medicamentosMasRecetados[1], medicamentosMasRecetados[2], medicamentosMasRecetados[3], medicamentosMasRecetados[4]);
+              document.getElementById('textoControl_medicamentos').style.display = 'none';
+             }else if((medicamentosMasRecetados.length < 5) && (medicamentosMasRecetados.length >= 1)){
+              document.getElementById("masRecetado").innerHTML = String(medicamentosMasRecetados[0][0] + " - " + medicamentosMasRecetados[0][3]);
+              document.getElementById('textoControl_medicamentos').innerHTML = "No hay elementos suficientes para mostrar el gráfico.";
+             }else{
+              document.getElementById('textoControl_medicamentos').innerHTML = "No hay elementos suficientes para mostrar datos.";
+              document.getElementById('tablaAlmacenaID').style.display = 'none';
+             }
+             
+             oculta_muestra();
+
            }else{
-            document.getElementById('cartelInformativo').innerHTML = "No hay elementos suficientes para mostrar el gráfico.";
-           }
-           
-           if(control == 0){
-            document.getElementById('ocultar_s1').style.display = '';
-           }
-           
-           document.getElementById('textoControl').style.display = 'none';
-           document.getElementById('ocultar_s1').style.display = '';
-           document.getElementById('ocultar_s2').style.display = '';
+              document.getElementById('textoControl_pacientes').innerHTML = 'Recopile los dantos antes de mostrarlos por favor';
+              document.getElementById('textoControl_medicamentos').innerHTML = 'Recopile los dantos antes de mostrarlos por favor';
 
+           }
         }
         this._super();
       },
   });
+
+
+function oculta_muestra(){
+
+
+  document.getElementById('textoControl_pacientes').style.display = 'none';
+ 
+  document.getElementById('ocultar_pacientes').style.display = '';
+  document.getElementById('ocultar_medicamentos').style.display = '';
+
+  
+
+}
 
 
 

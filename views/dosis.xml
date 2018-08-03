@@ -9,7 +9,7 @@
         <field name="model">gestion_clinica.dosis</field>
         <field name="arch" type="xml">
             <tree string="Lista de dosis"> <!-- default_order="fecha" -->
-                    <field name="visita_id"/>
+                    <field name="medicamento_id"/>
                     <field name="paciente_id"/>    
                     <field name="fechaInicio"/>
                     <field name="fechaFin"/>

@@ -7,7 +7,7 @@
         <field name="name">alertas.general</field>
         <field name="model">gestion_clinica.estadistica</field>
         <field name="arch" type="xml">
-            <form string="estadistica" create="false">
+            <form string="estadistica" version="7.0" create="false" edit="false" delete="false" write="false">
               <sheet>
                 
                 
@@ -17,7 +17,7 @@
                     <th style="text-align: right;">
                       <div style="margin-top: 6px;">
                       <button class ="btn btn-primary btn-sm o_form_button_save botonEs" name="carga_graficos" string="1.Recopilar datos" type="object" custom="cargaDatos"/>
-                      <button id="botonclick" class ="btn btn-primary btn-sm o_form_button_save botonEs" name="carga_graficos" string="2.Cargar gráficos" type="object" custom="click"/>
+                      <button id="botonclick" class ="btn btn-primary btn-sm o_form_button_save botonEs" name="carga_graficos" string="2.Mostrar gráficos" type="object" custom="click"/>
                       </div>
                     </th> 
                   </tr>
@@ -26,7 +26,7 @@
                 <separator/>
                   <notebook>
                       <page string="Clientes/Pacientes">
-                              <div id="ocultar_s1" style="display:none;">
+                              <div id="ocultar_pacientes" style="display:none;">
                                 <table class="tablaAlmacena">
 
                                   <tr>
@@ -49,13 +49,13 @@
                                 <div class="cajaGrafico"><canvas id="pacienteTotales"></canvas></div>
                                 <div class="cajaGrafico"><canvas id="pacientesDonantes"></canvas></div>
                               </group>
-                              <h3 id="textoControl" style="text-align: center;">Recopiler los datos si has entrado al sistema o cargarlos directamente si ya lo has recopilado.</h3> 
+                              <h4 id="textoControl_pacientes" style="text-align: center;">¡Atención! Recopile los datos si acaba de iniciar la aplicación o muestrelos directamente si ya lo ha recopilado.</h4> 
                               <canvas id="pacientesPorEdad"></canvas>
 
                       </page>
                       <page string="Medicamentos" >
-                            <div id="ocultar_s2" style="display:none;">
-                            <table class="tablaAlmacena">
+                            <div id="ocultar_medicamentos" style="display:none;">
+                            <table id="tablaAlmacenaID" class="tablaAlmacena">
                               <tr>
                                 <td class="estiloFila" style="width: 17%;">Más recetado</td>
                                 <td>
@@ -63,10 +63,9 @@
                                 </td> 
                               </tr>
                             </table>
-                            <h3 id="cartelInformativo" style="text-align: center; style=display:none;">Recopiler los datos si has entrado al sistema o cargarlos directamente si ya lo has recopilado.</h3> 
                             </div>
                             <separator/>
-
+                            <h4 id="textoControl_medicamentos" style="text-align: center; margin-top: 20%;">¡Atención! Recopile los datos si acaba de iniciar la aplicación o muestrelos directamente si ya lo ha recopilado.</h4> 
                             <canvas id="medicamentosTratamiento"></canvas>
                       </page>
                   </notebook>

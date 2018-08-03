@@ -160,9 +160,9 @@ class Paciente(models.Model):
         help='Donante de ovulos o semen'
     )
     doctor_id = fields.Many2one('res.users', string='Doctor', required=True)
-    patologia_ids = fields.One2many('gestion_clinica.patologia', 'paciente_id', string='Patologia', ondelete='cascade')
-    visita_ids = fields.One2many('gestion_clinica.visita', 'paciente_id', string='Visita', ondelete='cascade')
-    dosis_ids = fields.One2many('gestion_clinica.dosis', 'paciente_id', string='Dosis', ondelete='cascade')
+    patologia_ids = fields.One2many('gestion_clinica.patologia', 'paciente_id', string='Patologia')
+    visita_ids = fields.One2many('gestion_clinica.visita', 'paciente_id', string='Visita')
+    dosis_ids = fields.One2many('gestion_clinica.dosis', 'paciente_id', string='Dosis')
 
 class Patologia(models.Model):
     _name = 'gestion_clinica.patologia'
@@ -178,7 +178,7 @@ class Patologia(models.Model):
         string="Descripción",
         help='Descripción de patologia'
     )
-    paciente_id = fields.Many2one('gestion_clinica.paciente', string="Paciente", required=True)
+    paciente_id = fields.Many2one('gestion_clinica.paciente', string="Paciente", required=True, ondelete='cascade')
 
 class Visita(models.Model):
     _name = 'gestion_clinica.visita'
@@ -209,8 +209,8 @@ class Visita(models.Model):
         string='Pruebas',
         help='Pruebas médicas a realizar, de existir se detallan en la descripción de la visita'
     )
-    paciente_id = fields.Many2one('gestion_clinica.paciente', string="Paciente", required=True)
-    dosis_ids = fields.One2many('gestion_clinica.dosis', 'visita_id', string='Dosis relacionadas', ondelete='cascade')
+    paciente_id = fields.Many2one('gestion_clinica.paciente', string="Paciente", required=True, ondelete='cascade')
+    dosis_ids = fields.One2many('gestion_clinica.dosis', 'visita_id', string='Dosis relacionadas')
     #Derivadas
     nombreDoctor = fields.Char(related='paciente_id.doctor_id.name', store=True, string="Doctor", readonly=True)
     idDoctor = fields.Integer(related='paciente_id.doctor_id.id', store=True, string="ID Doctor", readonly=True)
@@ -294,7 +294,7 @@ class Dosis(models.Model):
     )
     visita_id = fields.Many2one('gestion_clinica.visita', store=True, ondelete='cascade', string="Visita", required=True)
     medicamento_id = fields.Many2one('gestion_clinica.medicamento', string="Medicamento", required=True)
-    paciente_id = fields.Many2one(related='visita_id.paciente_id', string="Paciente", required=True, readonly=True) 
+    paciente_id = fields.Many2one(related='visita_id.paciente_id', string="Paciente", required=True, readonly=True, ondelete='cascade') 
     #default=lambda self: self.env['gestion_clinica.paciente'].search([('id', '=', self.idPaciente)], limit=1)
    
 class Alerta(models.TransientModel):

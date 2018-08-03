@@ -157,7 +157,7 @@
                                         </group>
                                     </form>
                                     <tree>
-                                        <field name="visita_id"/>
+                                        <field name="medicamento_id"/>
                                         <field name="fechaInicio"/>
                                         <field name="fechaFin"/>
                                         <field name="frecuencia"/>
