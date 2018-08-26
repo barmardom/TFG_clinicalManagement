@@ -2,12 +2,7 @@
 <!DOCTYPE xml>
 <odoo>
   <data>
-    <template id="assets_backend" name="gestion_clinica css assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/gestion_clinica/static/src/css/style.css"/>
-        </xpath>
-    </template>
-
+    
     <record model="ir.ui.view" id="gestion_clinica.medicamentos_tree">
       <field name="name">medicamentos.tree</field>
       <field name="model">gestion_clinica.medicamento</field>
@@ -42,6 +37,22 @@
                                     <field name="cantidad"/>
                                     <field name="unidad"/>
                                     <field name="enlace" widget="url"/>
+                                    <field name="estado"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Estadísticas">
+                            <group>
+                                <group colspan="0" col="0">
+                                    <parrafo style="">Bienvenido al sistema de estadísticas de Inebir, a continuación se muestran datos estadisticos para el medicamento seleccionado, tenga en cuenta que el valor 0 de eficacia significa que no existe aún nínguna evaluación del mismo.</parrafo>
+                                </group>
+                                <br />
+                                <group colspan="4" col="4">
+                                    <field name="totalDosis"/>
+                                    <field name="dosisPuntuadas"/>
+                                </group>
+                                <group colspan="2" col="2">
+                                    <field name="eficaciaMedia"/>
                                 </group>
                             </group>
                         </page>
@@ -55,7 +66,7 @@
    <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="gestion_clinica.action_windowMedicamentos">
-      <field name="name">Ventana de medicmaentos</field>
+      <field name="name">Ventana de medicamentos</field>
       <field name="res_model">gestion_clinica.medicamento</field>
       <field name="view_mode">tree,form</field>
     </record> 
@@ -66,12 +77,12 @@
 
     <!-- menu categories -->
 
-    <menuitem name="Medicamentos" id="gestion_clinica.medicamentos" parent="gestion_clinica.menu_root"/>
+    <menuitem name="Sistema farmacológico" id="gestion_clinica.medicamentos" parent="gestion_clinica.menu_root" sequence="2"/>
 
     <!-- actions -->
 
     <menuitem name="Lista de medicamentos" id="gestion_clinica.medicamentos_list" parent="gestion_clinica.medicamentos"
-              action="gestion_clinica.action_windowMedicamentos"/> 
+              action="gestion_clinica.action_windowMedicamentos" sequence="8"/> 
 
   </data>
 </odoo>

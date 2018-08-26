@@ -2,30 +2,93 @@
 <!DOCTYPE xml>
 <odoo>
   <data>
-    <template id="assets_backend" name="gestion_clinica css assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/gestion_clinica/static/src/css/style.css"/>
-        </xpath>
-    </template>
+
+    <record id="gestion_clinica.estadisticas_general" model="ir.ui.view">
+        <field name="name">alertas.general</field>
+        <field name="model">gestion_clinica.estadistica</field>
+        <field name="arch" type="xml">
+            <form string="estadistica" version="7.0" create="false" edit="false" delete="false" write="false">
+              <sheet>
+                
+                
+                <table style="width:100%">
+                  <tr>
+                    <th><h1 class="colorGeneral">Estadísticas del sistema</h1></th>
+                    <th style="text-align: right;">
+                      <div style="margin-top: 6px;">
+                      <button class ="btn btn-primary btn-sm o_form_button_save botonEs" name="carga_graficos" string="1.Recopilar datos" type="object" custom="cargaDatos"/>
+                      <button id="botonclick" class ="btn btn-primary btn-sm o_form_button_save botonEs" name="carga_graficos" string="2.Mostrar gráficos" type="object" custom="click"/>
+                      </div>
+                    </th> 
+                  </tr>
+                </table>
+
+                <separator/>
+                  <notebook>
+                      <page string="Clientes/Pacientes">
+                              <div id="ocultar_pacientes" style="display:none;">
+                                <table class="tablaAlmacena">
+
+                                  <tr>
+                                    <td class="estiloFila">Total pacientes</td>
+                                    <td><p class="dato" id="total_pacientes"></p></td> 
+                                     <td class="estiloFila">Donantes</td>
+                                    <td><p class="dato" id="total_donantes"></p></td> 
+                                  </tr>
+
+                                  <tr>
+                                    <td class="estiloFila">Hombres</td>
+                                    <td><p class="dato" id="total_hombres"></p></td> 
+                                     <td class="estiloFila">Mujeres</td>
+                                    <td><p class="dato" id="total_mujeres"></p></td> 
+                                  </tr>
+                                </table>
+                              </div>
+                              
+                              <group>
+                                <div class="cajaGrafico"><canvas id="pacienteTotales"></canvas></div>
+                                <div class="cajaGrafico"><canvas id="pacientesDonantes"></canvas></div>
+                              </group>
+                              <h4 id="textoControl_pacientes" style="text-align: center;">¡Atención! Recopile los datos si acaba de iniciar la aplicación o muestrelos directamente si ya lo ha recopilado.</h4> 
+                              <canvas id="pacientesPorEdad"></canvas>
+
+                      </page>
+                      <page string="Medicamentos" >
+                            <div id="ocultar_medicamentos" style="display:none;">
+                            <table id="tablaAlmacenaID" class="tablaAlmacena">
+                              <tr>
+                                <td class="estiloFila" style="width: 17%;">Más recetado</td>
+                                <td>
+                                  <p style="margin-left: 1%;" id="masRecetado"></p>
+                                </td> 
+                              </tr>
+                            </table>
+                            </div>
+                            <separator/>
+                            <h4 id="textoControl_medicamentos" style="text-align: center; margin-top: 20%;">¡Atención! Recopile los datos si acaba de iniciar la aplicación o muestrelos directamente si ya lo ha recopilado.</h4> 
+                            <canvas id="medicamentosTratamiento"></canvas>
+                      </page>
+                  </notebook>
+              </sheet>
+            </form>
+        </field>
+    </record>
 
 
-    <!--<record model="ir.actions.act_window" id="gestion_clinica.action_windowEstadisticas">
-      <field name="name">Visitas</field>
-      <field name="res_model">gestion_clinica.visita</field>
-      <field name="view_mode">tree,form</field>
-    </record> -->
+    <record model="ir.actions.act_window" id="gestion_clinica.action_windowEstadisticas2">
+      <field name="name">Estadisticas</field>
+      <field name="res_model">gestion_clinica.estadistica</field>
+      <field name="view_mode">form</field>
+    </record>
     
     <!-- menu categories -->
 
-    <menuitem name="Estadísticas" id="gestion_clinica.estadisticas" parent="gestion_clinica.menu_root"/>
+    <menuitem name="Sistema estadístico" id="gestion_clinica.estadisticas" parent="gestion_clinica.menu_root" groups="base.group_system,group_clinica_distribuidor" sequence="3"/>
 
     <!-- actions -->
 
-    <menuitem name="Efectividad de productos" id="gestion_clinica.estadisticas_medicamentos" parent="gestion_clinica.estadisticas"
-              action="gestion_clinica.action_windowMedicamentos"/>
-
-    <menuitem name="Informes" id="gestion_clinica.estadisticas_informes" parent="gestion_clinica.estadisticas"
-              action="gestion_clinica.action_windowVisitas"/>
+    <menuitem name="Estadísticas globales" id="gestion_clinica.estadistica_1" parent="gestion_clinica.estadisticas"
+              action="gestion_clinica.action_windowEstadisticas2" sequence="9"/>
 
 
             

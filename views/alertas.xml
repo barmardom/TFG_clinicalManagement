@@ -2,13 +2,6 @@
 <!DOCTYPE xml>
 <odoo>
   <data>
-    <template id="assets_backend" name="gestion_clinica css assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/gestion_clinica/static/src/css/style.css"/>
-        </xpath>
-    </template>
-
-
     <!-- ALERTA - ARBOL -->
     <record id="gestion_clinica.alertas_tree" model="ir.ui.view">
         <field name="name">alertas.tree</field>
@@ -42,7 +35,7 @@
 
 
     <menuitem name="Alertas" id="gestion_clinica.alertas_list" parent="gestion_clinica.pacientes"
-              action="gestion_clinica.action_windowAlertas"/>s"/>
+              action="gestion_clinica.action_windowAlertas" sequence="7"/>
 
 
             

@@ -7,7 +7,7 @@
 
     'description': """
         Este módulo permite a los profesionales de la clínica:
-            -Gestionar la lista completa de medicamentos registrados (vademecum), junto con su eficiencia global en los pacientes.
+            -Gestionar la lista completa de medicamentos registrados (vademecum), junto con su eficacia en pacientes.
             -Gestionar a los pacientes, crear, editar, borrar. Así como las patologías, visitas, dosis y alertas asociados a ellos.
             -Estudio de estadísticas por parte de los proveedores de fármacos
         **Como funcionalidades a desarrollar en el futuro destacan:
@@ -21,7 +21,7 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
-    'category': 'Uncategorized',
+    'category': 'Gestion','Medicina'
     'version': '0.1',
 
     # any module necessary for this one to work correctly
@@ -29,20 +29,28 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
         'security/access.xml',
+        'views/templates.xml',
         'views/pacientes.xml',
         'views/medicamentos.xml',
         'views/visitas.xml',
-        'views/estadisticas.xml',
+        'views/dosis.xml',
         'views/alertas.xml',
-
+        'views/estadisticas.xml',
+        'security/ir.model.access.csv'
+        
     ],
     'css': [
         'static/src/css/style.css'
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
+    'js': [
+        'static/src/js/javascriptfile.js'
     ],
+    #'qweb': [
+    #    'static/src/xml/qweb_file.xml',
+    #],
+    # only loaded in demonstration mode
+    #'demo': [
+    #    'demo/demo.xml',
+    #],
 }
