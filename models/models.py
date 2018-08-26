@@ -104,11 +104,6 @@ class Medicamento(models.Model):
         self.totalDosis = len(self.dosis_ids)
 
 
-    @api.multi
-    def carga_prueba(self):
-        return 2
-
-
 
 class Paciente(models.Model):
     _name = 'gestion_clinica.paciente'
