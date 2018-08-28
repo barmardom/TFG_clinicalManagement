@@ -16,7 +16,7 @@ import inspect
 class Medicamento(models.Model):
     _name = 'gestion_clinica.medicamento'
     _description = 'Medicamento'
-    _rec_name = 'nombre'
+    _rec_name = 'codigo'
 
     nombre = fields.Char(
         string="Nombre",
@@ -200,7 +200,7 @@ class Visita(models.Model):
     asunto = fields.Char(
         string="Asunto",
         help='Tema relacionado con la visita',
-        size=60,
+        size=30,
         required=True   
     )
     descripcion = fields.Text(
