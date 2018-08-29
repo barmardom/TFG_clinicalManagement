@@ -146,9 +146,9 @@ function cargador_pacientes(){
         edad = calcularEdad(res[i].fechaNacimiento);
         if (edad < 18){
           pacientesAdultos0 = pacientesAdultos0 + 1;
-        }else if(edad > 18 && edad <30){
+        }else if(edad >= 18 && edad <= 30){
           pacientesAdultos1 = pacientesAdultos1 + 1;
-        }else if(edad > 30 && edad <65){
+        }else if(edad > 30 && edad <= 65){
           pacientesAdultos2 = pacientesAdultos2 + 1;
         }else if(edad > 65){
           pacientesAdultos3 = pacientesAdultos3 + 1;

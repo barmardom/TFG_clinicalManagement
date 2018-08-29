@@ -3,7 +3,7 @@
     'name': "Gestion de Clínica",
 
     'summary': """
-        Gestión de clínica""",
+        Gestión de un centro de reprodución asistida""",
 
     'description': """
         Este módulo permite a los profesionales de la clínica:
@@ -22,7 +22,7 @@
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Gestion','Medicina'
-    'version': '0.1',
+    'version': '1.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base'],

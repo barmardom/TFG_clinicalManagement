@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from odoo import exceptions
 from odoo import models, fields, api, time
 from datetime import timedelta
 import datetime
@@ -8,11 +9,14 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from openerp.api import Environment
 from urlparse import urlparse, parse_qs
+import os
+import inspect
+
 
 class Medicamento(models.Model):
     _name = 'gestion_clinica.medicamento'
     _description = 'Medicamento'
-    _rec_name = 'nombre'
+    _rec_name = 'codigo'
 
     nombre = fields.Char(
         string="Nombre",
@@ -104,11 +108,6 @@ class Medicamento(models.Model):
         self.totalDosis = len(self.dosis_ids)
 
 
-    @api.multi
-    def carga_prueba(self):
-        return 2
-
-
 
 class Paciente(models.Model):
     _name = 'gestion_clinica.paciente'
@@ -149,7 +148,8 @@ class Paciente(models.Model):
 	)
     email = fields.Char(
 		string='Email',
-		help='Correo electrónico del paciente'
+		help='Correo electrónico del paciente',
+        required=True
 	)
     poblacion = fields.Char(
         string='Población',
@@ -163,6 +163,12 @@ class Paciente(models.Model):
     patologia_ids = fields.One2many('gestion_clinica.patologia', 'paciente_id', string='Patologia')
     visita_ids = fields.One2many('gestion_clinica.visita', 'paciente_id', string='Visita')
     dosis_ids = fields.One2many('gestion_clinica.dosis', 'paciente_id', string='Dosis')
+
+    @api.one
+    @api.constrains('email')
+    def _check_function(self):
+        if (("@" not in self.email) or ("." not in self.email)):
+            raise exceptions.ValidationError("El campo email no es válido.")
 
 class Patologia(models.Model):
     _name = 'gestion_clinica.patologia'
@@ -194,7 +200,7 @@ class Visita(models.Model):
     asunto = fields.Char(
         string="Asunto",
         help='Tema relacionado con la visita',
-        size=60,
+        size=30,
         required=True   
     )
     descripcion = fields.Text(
@@ -309,62 +315,70 @@ class Alerta(models.TransientModel):
         #final = parse_qs(qs).get('id', None)
 
         pacientes = self.env['gestion_clinica.paciente'].search([]) #Ya filtra por los pacientes que vel el doctor logeado. Caso de que se quiera limitar la busqueda: .search([('id','=', '2')], limit=1)
+        
+        gmailUser = ''
+        gmailPassword = ''
+
+        directory_path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+        dir_file = os.path.join(directory_path, 'pdata.txt')
+
+        with open(dir_file,'r') as f:
+            gmailUser = f.readline().rstrip('\n')
+            gmailPassword = f.readline().rstrip('\n')
+
 
         for paciente in pacientes:
-            for dosis in paciente.dosis_ids:
-                fecha_sumada = datetime.datetime.now() + datetime.timedelta(7)
-                date_fecha = datetime.datetime.strftime(fecha_sumada, '%Y-%m-%d')
-                fecha_hoy = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
-                if (dosis.cancelado == False) and (dosis.alertaEnviada ==False) and (date_fecha > dosis.fechaFin) and (dosis.fechaFin >= fecha_hoy):
+            if ((len(gmailUser) > 1) and (len(gmailUser) > 0)):
+                for dosis in paciente.dosis_ids:
+                    fecha_sumada = datetime.datetime.now() + datetime.timedelta(7)
+                    date_fecha = datetime.datetime.strftime(fecha_sumada, '%Y-%m-%d')
+                    fecha_hoy = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
+                    if (dosis.cancelado == False) and (dosis.alertaEnviada ==False) and (date_fecha > dosis.fechaFin) and (dosis.fechaFin >= fecha_hoy):
 
-                    gmailUser = '***'
-                    gmailPassword = '**'
-                    recipient = paciente.email
-
-                    asunto = dosis.visita_id.asunto.encode('utf-8')
-                    medicamento = dosis.medicamento_id.nombre.encode('utf-8')
-                    fechaF = str(dosis.fechaFin)
-                    nombreCompleto = paciente.nombre.encode('utf-8') + ' ' + paciente.apellidos.encode('utf-8')
-                    nombreDoctor = dosis.visita_id.paciente_id.doctor_id.name.encode('utf-8')
-                    html = """\
-                    <html>
-                    <head></head>
-                    <body>
-                    <tr>
-                    <td>
-                      <table border="0" cellpadding="0" cellspacing="0">
+                        recipient = paciente.email
+                        asunto = dosis.visita_id.asunto.encode('utf-8')
+                        medicamento = dosis.medicamento_id.nombre.encode('utf-8')
+                        fechaF = str(dosis.fechaFin)
+                        nombreCompleto = paciente.nombre.encode('utf-8') + ' ' + paciente.apellidos.encode('utf-8')
+                        nombreDoctor = dosis.visita_id.paciente_id.doctor_id.name.encode('utf-8')
+                        html = """\
+                        <html>
+                        <head></head>
+                        <body>
                         <tr>
-                          <td>
-                            <p>Hola <strong>{nombreCompleto}</strong>,</p>
-                            <p>Desde Inebir le recordamos que su tratamiento actual con <i>"{medicamento}"</i> relacionado con la visita <i>{asunto}</i>, termina muy pronto <strong>{fechaF}</strong>.</p>
-                            <p>No dude en contactar con nosotros o con su doctor ({nombreDoctor}) ante cualquier duda.</p>
-                            <p>Coordiales saludos, el equipo de Inebir.</p>
-                          </td>
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td>
+                                <p>Hola <strong>{nombreCompleto}</strong>,</p>
+                                <p>Desde Inebir le recordamos que su tratamiento actual con <i>"{medicamento}"</i> relacionado con la visita <i>{asunto}</i>, termina muy pronto <strong>{fechaF}</strong>.</p>
+                                <p>No dude en contactar con nosotros o con su doctor ({nombreDoctor}) ante cualquier duda.</p>
+                                <p>Coordiales saludos, el equipo de Inebir.</p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
                         </tr>
-                      </table>
-                    </td>
-                    </tr>
-                    </body>
-                    </html>
-                    """.format(nombreCompleto=nombreCompleto, medicamento=medicamento, asunto=asunto, fechaF=fechaF, nombreDoctor=nombreDoctor)
+                        </body>
+                        </html>
+                        """.format(nombreCompleto=nombreCompleto, medicamento=medicamento, asunto=asunto, fechaF=fechaF, nombreDoctor=nombreDoctor)
 
-                    msg = MIMEMultipart()
-                    msg['From'] = gmailUser
-                    msg['To'] = recipient
-                    msg['Subject'] = "Notificacion"
-                    cuerpo = MIMEText(html, 'html')
-                    msg.attach(cuerpo)
+                        msg = MIMEMultipart()
+                        msg['From'] = gmailUser
+                        msg['To'] = recipient
+                        msg['Subject'] = "Notificacion"
+                        cuerpo = MIMEText(html, 'html')
+                        msg.attach(cuerpo)
 
-                    mailServer = smtplib.SMTP('smtp.gmail.com', 587)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(gmailUser, gmailPassword)
-                    mailServer.sendmail(gmailUser, recipient, msg.as_string())
-                    mailServer.close()
+                        mailServer = smtplib.SMTP('smtp.gmail.com', 587)
+                        mailServer.ehlo()
+                        mailServer.starttls()
+                        mailServer.ehlo()
+                        mailServer.login(gmailUser, gmailPassword)
+                        mailServer.sendmail(gmailUser, recipient, msg.as_string())
+                        mailServer.close()
 
-                    dosis.alertaEnviada = True
-
+                        dosis.alertaEnviada = True
 
 ###############################################################################
 
