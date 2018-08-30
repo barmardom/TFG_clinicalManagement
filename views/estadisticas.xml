@@ -4,7 +4,7 @@
   <data>
 
     <record id="gestion_clinica.estadisticas_general" model="ir.ui.view">
-        <field name="name">alertas.general</field>
+        <field name="name">estadisticas.general</field>
         <field name="model">gestion_clinica.estadistica</field>
         <field name="arch" type="xml">
             <form string="estadistica" version="7.0" create="false" edit="false" delete="false" write="false">
