@@ -1,29 +1,24 @@
 .colorGeneral {
- color: #7c7bad;
+ 	color: #7c7bad;
 }
 
 .botonEs {
- margin-right: 1%;
+ 	margin-right: 1%;
 }
 
 .tablaAlmacena{
-
 	width:100%; margin: 20px 0;
 }
 
 .tablaAlmacena tr{
 	vertical-align: top;
-
 }
 
 .dato{
-
 	margin-left: 5%;
 }
 
 .estiloFila{
-
-font-weight:bold; border-right: 1px solid #ddd; width: 25%;
-
+	font-weight:bold; border-right: 1px solid #ddd; width: 25%;
 }
 
