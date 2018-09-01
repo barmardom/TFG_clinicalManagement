@@ -188,7 +188,7 @@
     </record>
 
     
-    <menuitem name="Gestión de Clínica" id="gestion_clinica.menu_root"/>
+    <menuitem name="Gestión de medicamentos y pacientes" id="gestion_clinica.menu_root"/>
 
     <!-- menu categories -->
 

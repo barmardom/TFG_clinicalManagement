@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Gestion de Clínica",
+    'name': "Gestión de medicamentos y pacientes",
 
     'summary': """
         Gestión de un centro de reprodución asistida""",
