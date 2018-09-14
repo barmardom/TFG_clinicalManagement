@@ -1,4 +1,4 @@
-# SISTEMA DE GESTIÓN DE MEDICAMENTOS, DOSIS E INVENTARIO
+# Sistema de Gestión de Medicamentos, Dosis e Inventario
 
 Se presenta el desarrollo de un sistema para la gestión de medicamentos, dosis e inventario en una clínica de reproducción asistida.
 Desarrollado con el ERP Odoo v10, el sistema permite interactuar a tres roles, jefe de farmacia, doctor y distribuidor. Cada uno de ellos tendrá acceso a sus propias funcionalidades; el jefe de farmacia se encargará de registrar fármacos, el doctor de registrar sus visitas y dosis para sus pacientes y el distribuidor de realizar un estudio de los datos recopilados por el sistema para mejorar la distribución.
