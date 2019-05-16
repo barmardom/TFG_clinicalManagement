@@ -20,7 +20,7 @@ Especifición de roles:
 ### Distribuidor puede:
 
 - Acceder al sistema de medicamentos, donde se le presenta un listado de medicamentos con la eficacia registrada por el doctor anteriormente en cada uno de ellos
-- Acceder al sistema estadístico, donde se presentan diferentes informes y gráficos para que el proveedor farmacéutico tenga la posibilidad de realizar un estudio.
+- Acceder al sistema estadístico, donde se presentan diferentes informes y gráficos para que el proveedor farmacéutico tenga la posibilidad de realizar un estudio. (Con tecnología Chart.js)
 
 ### Administrador del sistema puede:
 
